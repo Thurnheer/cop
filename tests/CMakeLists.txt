@@ -5,6 +5,7 @@ project( cop_tests LANGUAGES CXX VERSION 0.0.1 )
 set(CMAKE_CXX_STANDARD 20)
 
 find_package(Catch2 REQUIRED)
+find_package( trompeloeil REQUIRED )
 
 add_subdirectory( integrationtests )
 
@@ -17,6 +18,7 @@ add_executable(${PROJECT_NAME}
 target_link_libraries( ${PROJECT_NAME}
     PRIVATE
     Catch2::Catch2
+    trompeloeil
     cop_unittests::cop_unittests
     cop_integrationtests::cop_integrationtests
 ) 
