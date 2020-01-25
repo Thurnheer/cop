@@ -3,10 +3,12 @@
 #include "COP_Event.hpp"
 #include "COP_Channel.hpp"
 
-class Mock {
+/*class Mock {
 public:
     MAKE_MOCK1(read, void(COP::ReceivedEvent&));
 };
+Mock m;
+REQUIRE_CALL(m, read(trompeloeil::_)).TIMES(1);*/
 
 SCENARIO( "Events can be sent and received", "[Event]" ) {
     GIVEN( "An event containing a boolean and a channel" ) {
@@ -22,15 +24,16 @@ SCENARIO( "Events can be sent and received", "[Event]" ) {
         }
         WHEN( "the event is sent and somebody has registered for the event" ) {
             static constexpr int data = 42;
-            auto c = [](COP::ReceivedEvent& r) {
-                REQUIRE( r.read() == data );
-            };
-            Mock m;
-            REQUIRE_CALL(m, read(trompeloeil::_)).TIMES(1);
-            b.registerCallback(c);
             a.write(data);
             b.sendEvent(a);
 
+            int receiveBuffer = 0;
+            
+            b.registerEvent(receiveBuffer);
+
+            THEN( "the data is writte to the destination buffer" ) {
+                REQUIRE( receiveBuffer == data );
+            }
         }
     }
 }

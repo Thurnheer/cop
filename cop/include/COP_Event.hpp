@@ -10,6 +10,10 @@ namespace COP {
     };
     class Event {
     public:
+        template<typename BeginItr, typename EndItr>
+        void write(BeginItr& beginItr, const EndItr& endItr) {
+
+        }
         template<typename T>
         void write(const T& t) {
 

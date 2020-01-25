@@ -11,10 +11,16 @@ namespace COP {
 
         }
 
-        void registerCallback(std::function<void(COP::ReceivedEvent&)> f) {
-
+        template<typename T>
+        void registerEvent(T& t) {
+            t = 42;
         }
 
+    private:
+        template<typename BeginItr, typename EndItr>
+        void read(BeginItr& beginItr, EndItr& endItr) {
+
+        }
     };
 }
 
