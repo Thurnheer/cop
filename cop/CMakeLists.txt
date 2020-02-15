@@ -14,7 +14,6 @@ target_sources(${PROJECT_NAME}
     INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/COP_Event.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/COP_Channel.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/COP_Iterator.hpp
 )
 
 target_include_directories(${PROJECT_NAME}
