@@ -5,7 +5,7 @@ project( cop LANGUAGES CXX VERSION 0.0.1 )
 set(CMAKE_CXX_STANDARD 20)
 
 add_library(${PROJECT_NAME}
-    INTERFACE
+    STATIC
 )
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
@@ -14,6 +14,10 @@ target_sources(${PROJECT_NAME}
     INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Event.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Channel.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.hpp
+
+    PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.cpp
 )
 
 target_include_directories(${PROJECT_NAME}
