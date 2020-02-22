@@ -2,14 +2,24 @@
 #define COP_EVENT_HPP
 
 namespace COP {
-    class ReceivedEvent {
+
+    using ID_t = uint32_t;
+    
+    struct EventBase{};
+
+    template<ID_t id>
+    class ReceivedEvent : public EventBase {
     public:
+        static const ID_t ID = id;
         auto read() {
             return 42;
         }
     };
-    class Event {
+
+    template<ID_t id>
+    class Event  : public EventBase{
     public:
+        static const ID_t ID = id;
         template<typename BeginItr, typename EndItr>
         void write(BeginItr& beginItr, const EndItr& endItr) {
 

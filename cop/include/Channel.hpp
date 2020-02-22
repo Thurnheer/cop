@@ -1,19 +1,13 @@
 #ifndef COP_CHANNEL_HPP
 #define COP_CHANNEL_HPP
 
-#include "COP_Event.hpp"
-#include <functional>
+#include "Event.hpp"
 
 namespace COP {
     class Channel {
     public:
-        void sendEvent(const Event& e) {
+        void sendEvent(const EventBase& e) {
 
-        }
-
-        template<typename T>
-        void registerEvent(T& t) {
-            t = 42;
         }
 
     private:

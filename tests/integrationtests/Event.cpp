@@ -1,7 +1,7 @@
 #include <catch2/catch.hpp>
 #include "trompeloeil.hpp"
-#include "COP_Event.hpp"
-#include "COP_Channel.hpp"
+#include "Event.hpp"
+#include "Channel.hpp"
 
 /*class Mock {
 public:
@@ -12,27 +12,34 @@ REQUIRE_CALL(m, read(trompeloeil::_)).TIMES(1);*/
 
 SCENARIO( "Events can be sent and received", "[Event]" ) {
     GIVEN( "An event containing a boolean and a channel" ) {
-        COP::Event a;
-        COP::Channel b;
+        enum events {
+            eMyEvent = 1
+        };
+        struct myEvent : COP::Event<eMyEvent> {
+            int data;
+        };
+
+        struct myREvent : COP::ReceivedEvent<eMyEvent> {
+            int data;
+        };
+        struct myEvent myE;
+        struct myREvent myR;
+        COP::Channel sender;
+        COP::Channel receiver;
 
         WHEN( "the event is sent" ) {
-            b.sendEvent(a);
+            sender.sendEvent(myE);
 
             THEN( "the buffer will be empty" ) {
                 REQUIRE( true );
             }
         }
         WHEN( "the event is sent and somebody has registered for the event" ) {
-            static constexpr int data = 42;
-            a.write(data);
-            b.sendEvent(a);
+            myE.data = 42;
+            sender.sendEvent(myE);
 
-            int receiveBuffer = 0;
-            
-            b.registerEvent(receiveBuffer);
-
-            THEN( "the data is writte to the destination buffer" ) {
-                REQUIRE( receiveBuffer == data );
+            THEN( "the data is written to the destination buffer" ) {
+                REQUIRE( myE.data == myR.data );
             }
         }
     }
