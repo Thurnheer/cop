@@ -7,7 +7,8 @@ namespace COP {
 
 enum class ProtocolErrc
 {
-
+    success = 0,
+    invalidMessageId
 };
 
 std::error_code make_error_code(ProtocolErrc);

@@ -3,23 +3,17 @@
 #include "Event.hpp"
 #include "Channel.hpp"
 #include "Handler.hpp"
-
-/*class Mock {
-public:
-    MAKE_MOCK1(read, void(COP::ReceivedEvent&));
-};
-Mock m;
-REQUIRE_CALL(m, read(trompeloeil::_)).TIMES(1);*/
+#include "IdLayer.hpp"
 
 enum events {
     eMyEvent = 1
 };
 struct myEvent : COP::Event<eMyEvent, myEvent> {
-    int data;
+    int data = 41;
 };
 
 struct myREvent : COP::ReceivedEvent<eMyEvent, myREvent> {
-    int data;
+    int data = 42;
 };
 
 using AllMessages = std::tuple<myEvent, myREvent>;
@@ -30,38 +24,36 @@ DISPATCH
 struct Handler : COP::Handler
 {
     void handle(myREvent& e) {
-            REQUIRE(e.data == 42);
+            REQUIRE(e.data == 44);
     }
 
     void handle(myEvent& e) {
-            REQUIRE(e.data == 42);
+            REQUIRE(e.data == 46);
     }
 };
 
 
-SCENARIO( "Events can be sent and received", "[Event]" ) {
-    GIVEN( "An event containing a boolean and a channel" ) {
-        COP::Channel<Handler> sender;
-        COP::Channel<Handler> receiver;
-        struct myEvent myE;
-        struct myREvent myR;
+SCENARIO( "Events can be generated", "[Event]" ) {
+    GIVEN( "An event containing an id" ) {
+        
+        COP::IdLayer<AllMessages> idlayer;
+        
+        WHEN("the id layer reads an id") {
 
+            auto ptr = idlayer.read(eMyEvent);
+        
+            THEN("it will create the message") {
+                myREvent* a = dynamic_cast<myREvent*>(ptr.get());
 
-        WHEN( "the event is sent" ) {
-            sender.sendEvent(myE);
-
-            THEN( "the buffer will be empty" ) {
-                REQUIRE( true );
+                if(a) {
+                    REQUIRE(42 == a->data);
+                }
+                else {
+                    REQUIRE(false);
+                }
             }
         }
-        WHEN( "the event is sent and somebody has registered for the event" ) {
-            myE.data = 42;
-            sender.sendEvent(myE);
-
-            THEN( "the data is written to the destination buffer" ) {
-                REQUIRE( myE.data == myR.data );
-            }
-        }
+        
     }
 }
 

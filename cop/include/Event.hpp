@@ -3,6 +3,7 @@
 
 #include "Message.hpp"
 #include "Handler.hpp"
+#include "Error.hpp"
 
 namespace COP {
 
@@ -28,12 +29,12 @@ namespace COP {
     public:
         static const ID_t ID = id;
         template<typename BeginItr, typename EndItr>
-        void write(BeginItr& beginItr, const EndItr& endItr) {
-
+        ProtocolErrc write(BeginItr& beginItr, const EndItr& endItr) {
+            return ProtocolErrc::success;
         }
         template<typename T>
-        void write(const T& t) {
-
+        ProtocolErrc write(const T& t) {
+            return ProtocolErrc::success;
         }
 
     };
