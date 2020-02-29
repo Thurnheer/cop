@@ -91,7 +91,7 @@ private:
         template <typename MessageT>
         void operator()() {
             static const MessageFactory<MessageT> factory;
-            registry_[idx_] = &factory;
+            registry_[idx_++] = &factory;
         }
     private:
         Registry& registry_;
@@ -99,10 +99,10 @@ private:
     };
 
     NewMsg createMessage(ID_t id) {
-        auto f = std::find_if(registry_.begin(), registry_.end(), [&](const auto factory) {
+        const auto f = std::find_if(registry_.cbegin(), registry_.cend(), [&](const auto factory) {
             return id == factory->id();
         });
-        if(f != registry_.end()) {
+        if(f != registry_.cend()) {
             return (*f)->createMsg();
         }
         return NewMsg();

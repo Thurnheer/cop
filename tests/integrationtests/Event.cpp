@@ -41,12 +41,16 @@ SCENARIO( "Events can be generated", "[Event]" ) {
         WHEN("the id layer reads an id") {
 
             auto ptr = idlayer.read(eMyEvent);
+
+            THEN("a message is created") {
+                REQUIRE( ptr );
+            }
         
             THEN("it will create the message") {
-                myREvent* a = dynamic_cast<myREvent*>(ptr.get());
+                myEvent* a = dynamic_cast<myEvent*>(ptr.get());
 
                 if(a) {
-                    REQUIRE(42 == a->data);
+                    REQUIRE(41 == a->data);
                 }
                 else {
                     REQUIRE(false);
