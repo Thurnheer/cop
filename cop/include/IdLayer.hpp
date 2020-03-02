@@ -52,7 +52,29 @@ public:
 private:
 
     static const auto RegistrySize = std::tuple_size<AllMessages>::value;
+
+    template<class Message>
+    class FactoryT {
+    public:
+        std::unique_ptr<Message> create() { return std::make_unique<Message>(); }
+    };
     
+    template<class Handler, class AllMessagesT>
+    class HandlerWrapper;
+    
+    template<class Handler, class ...Types>
+    class HandlerWrapper<Handler, std::tuple<Types...> >
+    {
+        template<typename T>
+        auto create(){ FactoryT<T> t; return std::move(t); }
+        template<typename... Args>
+        auto init(){
+            return std::forward_as_tuple(create<Args>()...);
+        }
+        std::tuple<FactoryT<Types> ...> factories_ = init();
+        //std::array<int, RegistrySize> indexes_ = { Types::ID ...};
+    };
+
     class Factory {
     public:
         ID_t id() const {
