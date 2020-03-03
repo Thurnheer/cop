@@ -25,7 +25,11 @@ const ProtocolErrCategory protocolErrorCategory {};
 
 }
 
+namespace COP {
+
 std::error_code make_error_code(COP::ProtocolErrc e) {
     return {static_cast<int>(e), protocolErrorCategory};
+}
+
 }
 

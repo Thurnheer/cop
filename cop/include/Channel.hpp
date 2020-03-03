@@ -5,11 +5,9 @@
 #include "Error.hpp"
 
 namespace COP {
-    template<class Handler>
     class Channel {
     public:
         ProtocolErrc sendEvent(Message& e) {
-            e.dispatch(handler_);
             return static_cast<ProtocolErrc>(0);
         }
 
@@ -19,7 +17,6 @@ namespace COP {
 
             return static_cast<ProtocolErrc>(0);
         }
-        Handler handler_;
     };
 }
 

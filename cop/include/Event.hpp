@@ -2,7 +2,6 @@
 #define COP_EVENT_HPP
 
 #include "Message.hpp"
-#include "Handler.hpp"
 #include "Error.hpp"
 
 namespace COP {
@@ -12,7 +11,6 @@ namespace COP {
     template<class derived>
     class EventBase : public Message {
     protected:
-        virtual void dispatchImpl(Handler& handler) override;
     };
 
     template<ID_t id, class Derived>
@@ -41,9 +39,5 @@ namespace COP {
 
 }
 
-#define DISPATCH namespace COP { \
-    template<typename derived> \
-    void COP::EventBase<derived>::dispatchImpl(COP::Handler& handler) { \
-        handler.handle(static_cast<derived&>(*this)); \
-    }}
 #endif // COP_EVENT_HPP
+

@@ -8,12 +8,7 @@ namespace COP {
 
     class Message {
     public:
-        void dispatch(Handler& handler) {
-            dispatchImpl(handler);
-        }
 
-    protected:
-        virtual void dispatchImpl(Handler& handler) = 0;
     };
     
 }

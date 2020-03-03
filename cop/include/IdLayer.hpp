@@ -9,22 +9,18 @@
 
 namespace COP {
 
-template<class AllMessages>
+template<class Handler, class AllMessages>
 class IdLayer {
 public:
     
     using NewMsg = std::unique_ptr<Message>;
 
-    IdLayer() {
-        TupleForEach<AllMessages>(MessageFactoryCreator(registry_));
-    }
-    
-    NewMsg read( ID_t id) {
+    ProtocolErrc read( ID_t id) {
         /*Field field;
         if(auto e = field.read()) {
             return e;
         }*/
-        return createMessage(id);
+        return handler_.handle(id);
         
         /*msg = createMessage(id);
 
@@ -51,86 +47,42 @@ public:
 
 private:
 
-    static const auto RegistrySize = std::tuple_size<AllMessages>::value;
-
     template<class Message>
-    class FactoryT {
-    public:
-        std::unique_ptr<Message> create() { return std::make_unique<Message>(); }
-    };
-    
-    template<class Handler, class AllMessagesT>
-    class HandlerWrapper;
-    
-    template<class Handler, class ...Types>
-    class HandlerWrapper<Handler, std::tuple<Types...> >
-    {
-        template<typename T>
-        auto create(){ FactoryT<T> t; return std::move(t); }
-        template<typename... Args>
-        auto init(){
-            return std::forward_as_tuple(create<Args>()...);
-        }
-        std::tuple<FactoryT<Types> ...> factories_ = init();
-        //std::array<int, RegistrySize> indexes_ = { Types::ID ...};
-    };
-
     class Factory {
     public:
-        ID_t id() const {
-            return idImpl();
-        }
-        NewMsg createMsg() const {
-            return createMsgImpl();
-        }
-    private:
-        virtual ID_t idImpl() const = 0;
-        virtual NewMsg createMsgImpl() const = 0;
+        std::unique_ptr<Message> create() const { return std::make_unique<Message>(); }
     };
-
-    using Registry = std::array<const Factory*, RegistrySize>;
-
-    template <typename ActualMessage>
-    class MessageFactory : public Factory
-    {
-    protected:
-        virtual ID_t idImpl() const override
-        {
-            return ActualMessage::ID;
-        }
-
-        virtual NewMsg createMsgImpl() const override {
-            return NewMsg(new ActualMessage);
-        }
-    };
-
-    class MessageFactoryCreator {
-    public: 
-        MessageFactoryCreator(Registry& registry)
-        : registry_(registry)
-        {}
-
-        template <typename MessageT>
-        void operator()() {
-            static const MessageFactory<MessageT> factory;
-            registry_[idx_++] = &factory;
-        }
-    private:
-        Registry& registry_;
-        unsigned int idx_ = 0;
-    };
-
-    NewMsg createMessage(ID_t id) {
-        const auto f = std::find_if(registry_.cbegin(), registry_.cend(), [&](const auto factory) {
-            return id == factory->id();
-        });
-        if(f != registry_.cend()) {
-            return (*f)->createMsg();
-        }
-        return NewMsg();
-    }
     
-    Registry registry_;
+    template<class HandlerT, class AllMessagesT>
+    class HandlerWrapper;
+    
+    template<class HandlerT, class ...Types>
+    class HandlerWrapper<HandlerT, std::tuple<Types...> >
+    {
+    private:
+        HandlerT handler_;
+        
+        template<class First, class... Rest>
+        ProtocolErrc handle_impl(ID_t id) {
+            if(id == First::ID) {
+                Factory<First> first;
+                handler_.handle(*first.create().get());
+                return ProtocolErrc::success;
+            }
+            if constexpr (sizeof...(Rest) > 0) {
+                return handle_impl<Rest...>(id);
+            }
+            return ProtocolErrc::invalidMessageId;
+        }
+
+    public:
+        ProtocolErrc handle(ID_t id) {
+            return handle_impl<Types...>(id);
+        }
+    };
+    
+    HandlerWrapper<Handler, AllMessages> handler_;
+    
     //NextT next_;
 };
 
