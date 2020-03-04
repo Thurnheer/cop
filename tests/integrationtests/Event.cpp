@@ -28,6 +28,12 @@ struct Handler
     }
 };
 
+struct HandlerMock
+{
+    MAKE_MOCK1 (handle, void(myREvent&));
+
+    MAKE_MOCK1 (handle, void(myEvent& ));
+};
 
 SCENARIO( "Events can be generated", "[Event]" ) {
     GIVEN( "An event containing an id" ) {
@@ -36,10 +42,10 @@ SCENARIO( "Events can be generated", "[Event]" ) {
         
         WHEN("the id layer reads an id") {
 
-            auto ptr = idlayer.read(eMyEvent);
+            auto error = idlayer.read(eMyEvent);
 
             THEN("a message is created") {
-                REQUIRE(COP::ProtocolErrc::success ==  ptr );
+                REQUIRE(COP::ProtocolErrc::success ==  error );
             }
         
             /*THEN("it will create the message") {
