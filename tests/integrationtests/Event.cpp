@@ -17,17 +17,6 @@ struct myREvent : COP::ReceivedEvent<eMyEvent, myREvent> {
 
 using AllMessages = std::tuple<myEvent, myREvent>;
 
-struct Handler
-{
-    void handle(myREvent& e) {
-            REQUIRE(e.data == 44);
-    }
-
-    void handle(myEvent& e) {
-            REQUIRE(e.data == 41);
-    }
-};
-
 struct HandlerMock
 {
     MAKE_MOCK1 (handle, void(myREvent&));
@@ -38,7 +27,18 @@ struct HandlerMock
 SCENARIO( "Events can be generated", "[Event]" ) {
     GIVEN( "An event containing an id" ) {
         
-        COP::IdLayer<Handler, AllMessages> idlayer;
+        struct Handler
+        {
+            void handle(myREvent& e) {
+                    REQUIRE(e.data == 44);
+            }
+
+            void handle(myEvent& e) {
+                    REQUIRE(e.data == 41);
+            }
+        };
+        COP::IdLayer<Handler, AllMessages, true> idlayer;
+        
         
         WHEN("the id layer reads an id") {
 
