@@ -10,7 +10,7 @@
 
 namespace COP {
 
-template<class Handler, class AllMessages>
+template<class Handler, class AllMessages, bool UsingStaticMemory = false>
 class IdLayer {
 public:
     
@@ -48,40 +48,46 @@ public:
 
 private:
 
+    template<typename Message>
+    struct DynamicMemoryPolicy {
+        using MessagePtr = std::unique_ptr<Message>;
+
+        template<typename MessageT>
+        MessagePtr allocateMessage() {
+            return std::make_unique<MessageT>();
+        }
+    };
+
+    template<typename Message, class AllMessagesT>
+    class InPlaceAllocationPolicy {
+    private:
+        using InPlaceStorage = typename TupleAsAlignedUnion<AllMessages>::type;
+        InPlaceStorage storage_;
+    public:
+        template<typename T>
+        struct InPlaceDeleter {
+            void operator()(T* obj) {
+                obj->~T();
+            }
+        };
+        using MessagePtr = std::unique_ptr<Message, InPlaceDeleter<Message> >;
+
+        template<typename MessageT>
+        MessagePtr allocateMessage() {
+            new (&storage_) MessageT();
+            return MessagePtr( reinterpret_cast<MessageT*>(&storage_),
+                    InPlaceDeleter<MessageT>());
+        }
+    };
+    using alloc_type = std::conditional<UsingStaticMemory,
+                                        InPlaceAllocationPolicy<Message, AllMessages>, 
+                                        DynamicMemoryPolicy<Message>
+                                     >::type;
+
     template<class Message>
     class Factory {
     private:
-        template<typename Message>
-        struct DynamicMemoryPolicy {
-            using MessagePtr = std::unique_ptr<Message>;
 
-            template<typename MessageT>
-            MessagePtr allocateMessage() {
-                return std::make_unique(MessageT);
-            }
-        };
-        template<typename MessageT, class AllMessagesT>
-        class InPlaceAllocationPolicy {
-        private:
-            using InPlaceStorage = typename TupleAsAlignedUnion<AllMessagesT>::type;
-            InPlaceStorage storage_;
-        public:
-            template<typename MessageT>
-            struct InPlaceDeleter {
-
-            };
-            using MessagePtr = std::unique_ptr<MessageT, InPlaceDeleter<MessageT> >;
-
-            template<typename MessageT>
-            MessagePtr allocateMessage() {
-                new (&storage_) MessageT();
-                return MessagePtr( reinterpret_cast<MessageT*>(&storage_),
-                        InPlaceDeleter<MessageT>());
-            }
-        };
-        using ptr_type = std::conditional<UsingStaticMemory,
-                                          InPlaceAllocationPolicy<Message, AllMessages>, 
-                                          DynamicMemoryPolicy<Message> >::type;
     public:
         std::unique_ptr<Message> create() const { return std::make_unique<Message>(); }
     };
