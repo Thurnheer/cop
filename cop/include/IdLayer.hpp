@@ -8,6 +8,17 @@
 #include <algorithm>
 #include <type_traits>
 
+//-----------------------------------------------------------------------------
+//
+// IdLayer
+// Important notice:
+//  - When UsingStaticMemory is selected the message will be allocated within
+//    IdLayer. As a concequence it is not possible to receive new messages as 
+//    long as the message is not destroied.
+//  - This does not apply when using dynamic memory (the heap)
+//
+//-----------------------------------------------------------------------------
+
 namespace COP {
 
 template<class Handler, class AllMessages, bool UsingStaticMemory = false>
@@ -26,6 +37,7 @@ private:
     template<typename Message, class AllMessagesT>
     class InPlaceAllocationPolicy {
     private:
+        // TODO move storage to ID-Layer so it survieves
         using InPlaceStorage = typename TupleAsAlignedUnion<AllMessages>::type;
         InPlaceStorage storage_;
     public:
