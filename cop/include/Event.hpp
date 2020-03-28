@@ -1,31 +1,29 @@
 #ifndef COP_EVENT_HPP
 #define COP_EVENT_HPP
 
-#include "Message.hpp"
 #include "Error.hpp"
 
-namespace COP {
+namespace cop {
 
     using ID_t = uint32_t;
 
-    template<class derived>
-    class EventBase : public Message {
-    protected:
+    template<ID_t id>
+    class Id_t {
+    public:
+        static const ID_t ID = id;
     };
 
     template<ID_t id, class Derived>
-    class ReceivedEvent : public EventBase<Derived> {
+    class ReceivedEvent : public Id_t<id> {
     public:
-        static const ID_t ID = id;
         auto read() {
             return 42;
         }
     };
 
     template<ID_t id, class Derived>
-    class Event  : public EventBase<Derived>{
+    class Event  : public Id_t<id>{
     public:
-        static const ID_t ID = id;
         template<typename BeginItr, typename EndItr>
         ProtocolErrc write(BeginItr& beginItr, const EndItr& endItr) {
             return ProtocolErrc::success;

@@ -2,6 +2,7 @@
 #define COP_UTILITIES_HPP
 
 #include <type_traits>
+#include <tuple>
 
 template <typename TupleT>
 struct TupleAsAlignedUnion;
@@ -48,6 +49,25 @@ void TupleForEach(Function&& func) {
 
     detail::TupleForEachHelper<TupleSize>::template exec<tuple>(std::forward<Function>(func));
 }
+
+template<template<class> class Pred, class Sequence>
+struct filter;
+
+template<bool>
+struct zero_or_one {
+    template<class E> using type = std::tuple<E>;
+};
+
+template<>
+struct zero_or_one<false> {
+    template<class E> using type = std::tuple<>;
+};
+
+template<template<class> class Pred, class... Es>
+struct filter<Pred, std::tuple<Es...> > {
+    using type = decltype(std::tuple_cat(
+        std::declval<typename zero_or_one<Pred<Es>::value>::template type<Es>>()...));
+};
 
 #endif // COP_UTILITIES_HPP
 

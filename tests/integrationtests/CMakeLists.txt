@@ -18,6 +18,7 @@ target_link_libraries( ${PROJECT_NAME}
     PUBLIC
     PRIVATE
     cop::cop
+    cop_unittests::cop_unittests
 )
 
 

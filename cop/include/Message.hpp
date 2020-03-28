@@ -2,7 +2,7 @@
 #define COP_MESSAGE_HPP
 
 
-namespace COP {
+namespace cop {
 
     class Handler;
 

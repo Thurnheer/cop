@@ -15,7 +15,7 @@ const char* ProtocolErrCategory::name() const noexcept
 }
 
 std::string ProtocolErrCategory::message(int ev) const {
-    switch(static_cast<COP::ProtocolErrc>(ev)) {
+    switch(static_cast<cop::ProtocolErrc>(ev)) {
         default:
             return "(unrecognised error)";
     }
@@ -25,9 +25,9 @@ const ProtocolErrCategory protocolErrorCategory {};
 
 }
 
-namespace COP {
+namespace cop {
 
-std::error_code make_error_code(COP::ProtocolErrc e) {
+std::error_code make_error_code(cop::ProtocolErrc e) {
     return {static_cast<int>(e), protocolErrorCategory};
 }
 

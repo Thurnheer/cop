@@ -1,8 +1,6 @@
 #include <catch2/catch.hpp>
-#include "trompeloeil.hpp"
-#include "Event.hpp"
-#include "Channel.hpp"
-#include "IdLayer.hpp"
+#include <trompeloeil.hpp>
+#include "detail/HandlerWrapper.hpp"
 
 enum events {
     eMyEvent = 1
@@ -24,25 +22,23 @@ struct HandlerMock
     MAKE_MOCK1 (handle, void(myEvent& ));
 };
 
-SCENARIO( "Events can be generated", "[Event]" ) {
+
+SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
+
     GIVEN( "An event containing an id" ) {
         
         struct Handler
         {
             void handle(myREvent& e) {
-                    REQUIRE(e.data == 44);
-            }
-
-            void handle(myEvent& e) {
-                    REQUIRE(e.data == 41);
+                    REQUIRE(e.data == 42);
             }
         };
-        cop::IdLayer<Handler, AllMessages, true> idlayer;
-        
         
         WHEN("the id layer reads an id") {
+            cop::detail::HandlerWrapper<Handler, std::tuple<myREvent>, true> handler;
+        
 
-            auto error = idlayer.read(eMyEvent);
+            auto error = handler.handle(eMyEvent);
 
             THEN("a message is created") {
                 REQUIRE(cop::ProtocolErrc::success ==  error );
@@ -59,8 +55,9 @@ SCENARIO( "Events can be generated", "[Event]" ) {
                 }
             }*/
         }
+
         
     }
+    
+
 }
-
-

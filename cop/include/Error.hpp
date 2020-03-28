@@ -3,7 +3,7 @@
 
 #include <system_error>
 
-namespace COP {
+namespace cop {
 
 enum class ProtocolErrc
 {
@@ -17,7 +17,7 @@ std::error_code make_error_code(ProtocolErrc);
 
 namespace std {
     template<>
-    struct is_error_code_enum<COP::ProtocolErrc> : true_type{};
+    struct is_error_code_enum<cop::ProtocolErrc> : true_type{};
 }
 
 #endif // COP_ERRROR_HPP

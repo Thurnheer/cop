@@ -15,6 +15,9 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Event.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Channel.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/HandlerWrapper.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/InPlaceAllocationPolicy.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/DynamicMemoryPolicy.hpp
 
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.cpp

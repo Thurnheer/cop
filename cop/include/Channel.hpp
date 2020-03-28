@@ -3,8 +3,9 @@
 
 #include "Event.hpp"
 #include "Error.hpp"
+#include "Message.hpp"
 
-namespace COP {
+namespace cop {
     class Channel {
     public:
         ProtocolErrc sendEvent(Message& e) {
