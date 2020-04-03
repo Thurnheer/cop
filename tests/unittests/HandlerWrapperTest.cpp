@@ -3,24 +3,29 @@
 #include "detail/HandlerWrapper.hpp"
 
 enum events {
-    eMyEvent = 1
+    eMyFirstEvent = 1,
+    eMySecondEvent
 };
-struct myEvent : cop::Event<eMyEvent, myEvent> {
+struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
     int data = 41;
+    template<class Coder>
+    void parse(Coder coder) {
+        coder | data;
+    }
 };
 
-struct myREvent : cop::ReceivedEvent<eMyEvent, myREvent> {
+struct mySecondEvent : cop::Id_t<eMySecondEvent> {
     int data = 42;
+    double d = 2.9;
+
+    template<class Coder>
+    void parse(Coder coder) {
+        coder | data;
+        coder | d;
+    }
 };
 
-using AllMessages = std::tuple<myEvent, myREvent>;
-
-struct HandlerMock
-{
-    MAKE_MOCK1 (handle, void(myREvent&));
-
-    MAKE_MOCK1 (handle, void(myEvent& ));
-};
+using AllMessages = std::tuple<myFirstEvent, mySecondEvent>;
 
 
 SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
@@ -29,16 +34,19 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
         
         struct Handler
         {
-            void handle(myREvent& e) {
-                    REQUIRE(e.data == 42);
+            void handle(mySecondEvent& e) {
+                REQUIRE(e.data == 1);
+                REQUIRE(e.d == 0.0);
             }
         };
         
         WHEN("the id layer reads an id") {
-            cop::detail::HandlerWrapper<Handler, std::tuple<myREvent>, true> handler;
+            std::array<uint8_t, 1023> buf{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            using WriteIt = std::array<uint8_t, 1023>::const_iterator;
+            cop::detail::HandlerWrapper<Handler, WriteIt, std::tuple<mySecondEvent>, true> handler;
         
 
-            auto error = handler.handle(eMyEvent);
+            auto error = handler.handle(eMySecondEvent, buf.begin(), buf.end());
 
             THEN("a message is created") {
                 REQUIRE(cop::ProtocolErrc::success ==  error );

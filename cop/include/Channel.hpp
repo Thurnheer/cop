@@ -1,14 +1,13 @@
 #ifndef COP_CHANNEL_HPP
 #define COP_CHANNEL_HPP
 
-#include "Event.hpp"
+#include "Id.hpp"
 #include "Error.hpp"
-#include "Message.hpp"
 
 namespace cop {
     class Channel {
     public:
-        ProtocolErrc sendEvent(Message& e) {
+        ProtocolErrc sendEvent(/*Message& e*/) {
             return static_cast<ProtocolErrc>(0);
         }
 

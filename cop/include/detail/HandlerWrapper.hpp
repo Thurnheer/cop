@@ -4,15 +4,16 @@
 #include "../Error.hpp"
 #include "DynamicMemoryPolicy.hpp"
 #include "InPlaceAllocationPolicy.hpp"
-#include "../Event.hpp"
+#include "../Id.hpp"
+#include "../BinaryCoder.hpp"
 
 namespace cop::detail {
     
-    template<class HandlerT, class AllMessagesT, bool UsingStaticMemory>
+    template<class HandlerT, class WriteIt, class AllMessagesT, bool UsingStaticMemory>
     class HandlerWrapper;
     
-    template<class HandlerT, class ...Types, bool UsingStaticMemory>
-    class HandlerWrapper<HandlerT, std::tuple<Types...>, UsingStaticMemory>
+    template<class HandlerT, class WriteIt, class ...Types, bool UsingStaticMemory>
+    class HandlerWrapper<HandlerT, WriteIt, std::tuple<Types...>, UsingStaticMemory>
     {
     private:
         HandlerT handler_;
@@ -23,10 +24,12 @@ namespace cop::detail {
                                         >::type;
         
         template<class First, class... Rest>
-        cop::ProtocolErrc handle_impl(ID_t id) {
+        cop::ProtocolErrc handle_impl(ID_t id, WriteIt& it, WriteIt& end) {
             if(id == First::ID) {
                 alloc_type<First> factory;
-                handler_.handle(*factory.allocateMessage().get());
+                auto Msg = factory.allocateMessage();
+                Msg->parse(BinaryReceiveCoder(it, end));
+                handler_.handle(*Msg.get());
                 return ProtocolErrc::success;
             }
             if constexpr (sizeof...(Rest) > 0) {
@@ -36,8 +39,9 @@ namespace cop::detail {
         }
 
     public:
-        cop::ProtocolErrc handle(ID_t id) {
-            return handle_impl<Types...>(id);
+        //TODO how to pass iterator as reference?
+        cop::ProtocolErrc handle(ID_t id, WriteIt it, WriteIt end) {
+            return handle_impl<Types...>(id, it, end);
         }
     };
 

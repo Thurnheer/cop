@@ -21,11 +21,11 @@
 
 namespace cop {
 
-template<class Handler, class AllMessages, bool UsingStaticMemory = false>
+template<class Handler, class WriteIt, class AllMessages, bool UsingStaticMemory = false>
 class IdLayer {
 private:
 
-    detail::HandlerWrapper<Handler, AllMessages, UsingStaticMemory> handler_;
+    detail::HandlerWrapper<Handler, WriteIt, AllMessages, UsingStaticMemory> handler_;
     
     //NextT next_;
 public:
