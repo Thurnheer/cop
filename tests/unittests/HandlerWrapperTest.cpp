@@ -6,6 +6,7 @@ enum events {
     eMyFirstEvent = 1,
     eMySecondEvent
 };
+
 struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
     int data = 41;
     template<class Coder>

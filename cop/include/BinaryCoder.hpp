@@ -32,12 +32,12 @@ namespace cop {
     public:
         explicit BinarySendCoder(ReadIt& it, ReadIt& end) : it_(it), end_(end){}
         template<typename T>
-        void operator | (const T& t) {
+        void operator | (const T& t) const {
             serialize(reinterpret_cast<uint8_t const*>(&t), sizeof(T));
         }
 
     private:
-        void serialize(uint8_t const* data, size_t size) {
+        void serialize(uint8_t const* data, size_t size) const {
             for(int i = 0; i < size; ++i) {
                 *it_ = *data;
                 ++it_;

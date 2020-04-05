@@ -10,18 +10,7 @@ add_library(${PROJECT_NAME}
 
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
 
-target_sources(${PROJECT_NAME}
-    INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/Event.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/Channel.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/HandlerWrapper.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/InPlaceAllocationPolicy.hpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/detail/DynamicMemoryPolicy.hpp
-
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/Error.cpp
-)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_include_directories(${PROJECT_NAME}
     INTERFACE

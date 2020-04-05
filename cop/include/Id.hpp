@@ -1,5 +1,5 @@
-#ifndef COP_EVENT_HPP
-#define COP_EVENT_HPP
+#ifndef COP_ID_HPP
+#define COP_ID_HPP
 
 #include "Error.hpp"
 
@@ -13,7 +13,11 @@ namespace cop {
         static const ID_t ID = id;
     };
 
+    struct EventT {};
+
+    struct CommandT {};
+
 }
 
-#endif // COP_EVENT_HPP
+#endif // COP_ID_HPP
 
