@@ -42,11 +42,6 @@ enable_testing()
 find_package(Catch2 REQUIRED)
 find_package( trompeloeil REQUIRED )
 
-#add_test(
-    #NAME catch_test
-    #COMMAND $<TARGET_FILE:${TESTS_NAME}> --sucess
-#)
-
 include(CTest) 
 include(Catch)
 catch_discover_tests(${TESTS_NAME})
