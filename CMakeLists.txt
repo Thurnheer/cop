@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 enable_testing()
 
-add_subdirectory( cop )
+add_subdirectory( include )
 
 add_subdirectory( tests)
 
