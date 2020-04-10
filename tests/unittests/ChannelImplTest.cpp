@@ -1,4 +1,4 @@
-#include "detail/ChannelImpl.hpp"
+#include "cop/detail/ChannelImpl.hpp"
 #include <catch2/catch.hpp>
 
 enum EventIds {

@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 #include <trompeloeil.hpp>
-#include "detail/HandlerWrapper.hpp"
+#include "cop/detail/HandlerWrapper.hpp"
 
 enum events {
     eMyFirstEvent = 1,
