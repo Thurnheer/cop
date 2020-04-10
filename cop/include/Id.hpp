@@ -5,7 +5,7 @@
 
 namespace cop {
 
-    using ID_t = uint32_t;
+    using ID_t = uint16_t;
 
     template<ID_t id>
     class Id_t {
