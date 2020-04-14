@@ -7,6 +7,7 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/Event.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Channel.hpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Error.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/expected.hpp
 
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Error.cpp

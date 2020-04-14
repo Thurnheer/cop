@@ -1,29 +1,51 @@
 #ifndef COP_BINARYCODER_HPP
 #define COP_BINARYCODER_HPP
 
+#include "expected.hpp"
+
 namespace cop {
+
     template<class WriteIt>
     class BinaryReceiveCoder {
     public:
         explicit BinaryReceiveCoder(WriteIt& it, WriteIt& end) : it_(it), end_(end){}
         template<typename T>
-        void operator | (T& t) {
-            serialize(reinterpret_cast<uint8_t*>(&t), sizeof(T));
+        tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> operator | (T& t) {
+            auto r = serialize(reinterpret_cast<uint8_t*>(&t), sizeof(T));
+            if(r == ProtocolErrc::success) {
+                return *this;
+            }
+            return tl::unexpected(r);
         }
 
     private:
-        void serialize(uint8_t* data, size_t size) {
+        template<typename T>
+        friend
+        tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> operator |
+        (tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> e, T& t){
+            if(e) {
+                auto r = e.value().serialize(reinterpret_cast<uint8_t*>(&t), sizeof(T));
+                if(r == ProtocolErrc::success) {
+                    return e;
+                }
+                return tl::unexpected(r);
+            }
+            return e;
+        }
+
+        ProtocolErrc serialize(uint8_t* data, size_t size) {
             for(int i = 0; i < size; ++i) {
                 if(it_ == end_) {
-                    // TODO return ProtocolErrc::not_enough_space_in_buffer;
+                    return ProtocolErrc::not_enough_space_in_buffer;
                 }
                 *data = *it_;
                 ++it_;
                 ++data;
             }
+            return ProtocolErrc::success;
         }
-        WriteIt& it_;
-        WriteIt& end_;
+        std::reference_wrapper<WriteIt> it_;
+        std::reference_wrapper<WriteIt> end_;
 
     };
 

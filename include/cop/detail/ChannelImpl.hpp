@@ -27,7 +27,17 @@ namespace cop::detail {
             return cop::ProtocolErrc::success;
         }
 
-        cop::ProtocolErrc sendCommand() {
+        template<class Command>
+        cop::ProtocolErrc sendCommand(Command& command, ReadIt it, ReadIt end) {
+            static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
+            command.parse(BinarySendCoder(it, end));
+            return cop::ProtocolErrc::success;
+        }
+
+        template<class Command>
+        cop::ProtocolErrc sendCommand(Command command, ReadIt it, ReadIt end) {
+            static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
+            command.parse(BinarySendCoder(it, end));
             return cop::ProtocolErrc::success;
         }
     };

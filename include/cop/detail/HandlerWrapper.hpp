@@ -28,14 +28,17 @@ namespace cop::detail {
             if(id == First::ID) {
                 alloc_type<First> factory;
                 auto Msg = factory.allocateMessage();
-                Msg->parse(BinaryReceiveCoder(it, end));
-                handler_.handle(*Msg.get());
-                return ProtocolErrc::success;
+                auto er = Msg->parse(BinaryReceiveCoder(it, end));
+                if(er) {
+                    handler_.handle(*Msg.get());
+                    return ProtocolErrc::success;
+                }
+                return er.error();
             }
             if constexpr (sizeof...(Rest) > 0) {
                 return handle_impl<Rest...>(id);
             }
-            return ProtocolErrc::invalidMessageId;
+            return ProtocolErrc::invalid_message_id;
         }
 
     public:

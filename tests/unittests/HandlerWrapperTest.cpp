@@ -10,8 +10,8 @@ enum events {
 struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
     int data = 41;
     template<class Coder>
-    void parse(Coder coder) {
-        coder | data;
+    auto parse(Coder coder) {
+        return coder | data;
     }
 };
 
@@ -20,9 +20,8 @@ struct mySecondEvent : cop::Id_t<eMySecondEvent> {
     double d = 2.9;
 
     template<class Coder>
-    void parse(Coder coder) {
-        coder | data;
-        coder | d;
+    auto parse(Coder coder) {
+         return coder | data | d;
     }
 };
 

@@ -8,7 +8,8 @@ namespace cop {
 enum class ProtocolErrc
 {
     success = 0,
-    invalidMessageId
+    invalid_message_id,
+    not_enough_space_in_buffer
 };
 
 std::error_code make_error_code(ProtocolErrc);
