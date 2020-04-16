@@ -27,13 +27,13 @@ SCENARIO( "The channel implemenation sends messages" ) {
 
         WHEN( "the event is sent" ) {
 
-            std::array<uint8_t, 32> buf;
-            using ReadIt = std::array<uint8_t, 32>::iterator;
+            std::array<std::byte, 32> buf;
+            using ReadIt = std::array<std::byte, 32>::iterator;
 
             cop::detail::ChannelImpl<ReadIt> channel;
             channel.sendEvent(std::move(FirstEvent()), buf.begin(), buf.end());
             THEN ( "it will be serialised" ) {
-                REQUIRE(buf[0] == 3);
+                REQUIRE(buf[0] == std::byte{0x03});
             }
         }
     }

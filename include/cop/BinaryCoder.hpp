@@ -11,7 +11,8 @@ namespace cop {
         explicit BinaryReceiveCoder(WriteIt& it, WriteIt& end) : it_(it), end_(end){}
         template<typename T>
         tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> operator | (T& t) {
-            auto r = serialize(reinterpret_cast<uint8_t*>(&t), sizeof(T));
+            static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
+            auto r = serialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
             if(r == ProtocolErrc::success) {
                 return *this;
             }
@@ -23,8 +24,9 @@ namespace cop {
         friend
         tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> operator |
         (tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> e, T& t){
+            static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
             if(e) {
-                auto r = e.value().serialize(reinterpret_cast<uint8_t*>(&t), sizeof(T));
+                auto r = e.value().serialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
                 if(r == ProtocolErrc::success) {
                     return e;
                 }
@@ -33,7 +35,7 @@ namespace cop {
             return e;
         }
 
-        ProtocolErrc serialize(uint8_t* data, size_t size) {
+        ProtocolErrc serialize(std::byte* data, size_t size) {
             for(int i = 0; i < size; ++i) {
                 if(it_ == end_) {
                     return ProtocolErrc::not_enough_space_in_buffer;
@@ -55,11 +57,11 @@ namespace cop {
         explicit BinarySendCoder(ReadIt& it, ReadIt& end) : it_(it), end_(end){}
         template<typename T>
         void operator | (const T& t) const {
-            serialize(reinterpret_cast<uint8_t const*>(&t), sizeof(T));
+            serialize(reinterpret_cast<std::byte const*>(&t), sizeof(T));
         }
 
     private:
-        void serialize(uint8_t const* data, size_t size) const {
+        void serialize(std::byte const* data, size_t size) const {
             for(int i = 0; i < size; ++i) {
                 *it_ = *data;
                 ++it_;

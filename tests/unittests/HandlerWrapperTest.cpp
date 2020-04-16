@@ -18,6 +18,7 @@ struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
 struct mySecondEvent : cop::Id_t<eMySecondEvent> {
     int data = 42;
     double d = 2.9;
+    int* c;
 
     template<class Coder>
     auto parse(Coder coder) {
@@ -41,8 +42,10 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
         };
         
         WHEN("the id layer reads an id") {
-            std::array<uint8_t, 1023> buf{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-            using WriteIt = std::array<uint8_t, 1023>::const_iterator;
+            std::array<std::byte, 1023> buf
+                {std::byte{1}, std::byte{0}, std::byte{0}, std::byte{0},
+                 std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
+            using WriteIt = std::array<std::byte, 1023>::const_iterator;
             cop::detail::HandlerWrapper<Handler, WriteIt, std::tuple<mySecondEvent>, true> handler;
         
 
