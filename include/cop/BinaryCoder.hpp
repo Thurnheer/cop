@@ -83,6 +83,9 @@ namespace cop {
 
         ProtocolErrc serialize(std::byte const* data, size_t size) const {
             for(int i = 0; i < size; ++i) {
+                if(it_ == end_) {
+                    return ProtocolErrc::not_enough_space_in_buffer;
+                }
                 *it_ = *data;
                 ++it_;
                 ++data;

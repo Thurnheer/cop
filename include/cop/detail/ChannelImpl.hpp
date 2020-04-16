@@ -3,6 +3,7 @@
 
 #include "../Error.hpp"
 #include "../Event.hpp"
+#include "../Command.hpp"
 #include "../BinaryCoder.hpp"
 #include <type_traits>
 
@@ -36,13 +37,21 @@ namespace cop::detail {
         template<class Command>
         cop::ProtocolErrc sendCommand(Command& command, ReadIt it, ReadIt end) {
             static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
-            return command.parse(BinarySendCoder(it, end));
+            auto r = command.parse(BinarySendCoder(it, end));
+            if(r) {
+                return ProtocolErrc::success;
+            }
+            return r.error();
         }
 
         template<class Command>
         cop::ProtocolErrc sendCommand(Command command, ReadIt it, ReadIt end) {
             static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
-            return command.parse(BinarySendCoder(it, end));
+            auto r = command.parse(BinarySendCoder(it, end));
+            if(r) {
+                return ProtocolErrc::success;
+            }
+            return r.error();
         }
     };
 

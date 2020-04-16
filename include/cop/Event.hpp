@@ -1,7 +1,6 @@
 #ifndef COP_EVENT_HPP
 #define COP_EVENT_HPP
 
-#include "Error.hpp"
 #include "Id.hpp"
 
 namespace cop {
