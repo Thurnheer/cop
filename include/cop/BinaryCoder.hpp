@@ -12,7 +12,7 @@ namespace cop {
         template<typename T>
         tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> operator | (T& t) {
             static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
-            auto r = serialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
+            auto r = deserialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
             if(r == ProtocolErrc::success) {
                 return *this;
             }
@@ -26,7 +26,7 @@ namespace cop {
         (tl::expected<BinaryReceiveCoder<WriteIt>, ProtocolErrc> e, T& t){
             static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
             if(e) {
-                auto r = e.value().serialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
+                auto r = e.value().deserialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
                 if(r == ProtocolErrc::success) {
                     return e;
                 }
@@ -35,7 +35,7 @@ namespace cop {
             return e;
         }
 
-        ProtocolErrc serialize(std::byte* data, size_t size) {
+        ProtocolErrc deserialize(std::byte* data, size_t size) {
             for(int i = 0; i < size; ++i) {
                 if(it_ == end_) {
                     return ProtocolErrc::not_enough_space_in_buffer;
