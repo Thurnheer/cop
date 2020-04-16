@@ -56,18 +56,38 @@ namespace cop {
     public:
         explicit BinarySendCoder(ReadIt& it, ReadIt& end) : it_(it), end_(end){}
         template<typename T>
-        void operator | (const T& t) const {
+        tl::expected<BinarySendCoder<ReadIt>, ProtocolErrc> operator | (const T t) const {
             static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
-            serialize(reinterpret_cast<std::byte const*>(&t), sizeof(T));
+            auto r = serialize(reinterpret_cast<std::byte const*>(&t), sizeof(T));
+            if(r == ProtocolErrc::success) {
+                return *this;
+            }
+            return tl::unexpected(r);
         }
 
     private:
-        void serialize(std::byte const* data, size_t size) const {
+        template<typename T>
+        friend
+        tl::expected<BinarySendCoder<ReadIt>, ProtocolErrc> operator |
+        (tl::expected<BinarySendCoder<ReadIt>, ProtocolErrc> e, T t){
+            static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
+            if(e) {
+                auto r = e.value().serialize(reinterpret_cast<std::byte*>(&t), sizeof(T));
+                if(r == ProtocolErrc::success) {
+                    return e;
+                }
+                return tl::unexpected(r);
+            }
+            return e;
+        }
+
+        ProtocolErrc serialize(std::byte const* data, size_t size) const {
             for(int i = 0; i < size; ++i) {
                 *it_ = *data;
                 ++it_;
                 ++data;
             }
+            return ProtocolErrc::success;
         }
         ReadIt& it_;
         ReadIt& end_;
