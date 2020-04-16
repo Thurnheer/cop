@@ -57,6 +57,7 @@ namespace cop {
         explicit BinarySendCoder(ReadIt& it, ReadIt& end) : it_(it), end_(end){}
         template<typename T>
         void operator | (const T& t) const {
+            static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
             serialize(reinterpret_cast<std::byte const*>(&t), sizeof(T));
         }
 
