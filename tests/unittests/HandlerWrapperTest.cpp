@@ -46,8 +46,8 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
             std::array<std::byte, 1023> buf
                 {std::byte{1}, std::byte{0}, std::byte{0}, std::byte{0},
                  std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
-            using WriteIt = std::array<std::byte, 1023>::const_iterator;
-            cop::detail::HandlerWrapper<Handler, WriteIt, std::tuple<mySecondEvent>, true> handler;
+            using ReadIt = std::array<std::byte, 1023>::const_iterator;
+            cop::detail::HandlerWrapper<Handler, ReadIt, std::tuple<mySecondEvent>, true> handler;
         
 
             auto error = handler.handleEvent(eMySecondEvent, buf.begin(), buf.end());
