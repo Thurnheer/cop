@@ -66,7 +66,7 @@ struct zero_or_one<false> {
 template<template<class> class Pred, class... Es>
 struct filter<Pred, std::tuple<Es...> > {
     using type = decltype(std::tuple_cat(
-        std::declval<typename zero_or_one<Pred<Es>::value>::template type<Es>>()...));
+        std::declval<typename zero_or_one<Pred<typename Es::type>::value>::template type<Es>>()...));
 };
 
 #endif // COP_UTILITIES_HPP

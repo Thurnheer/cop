@@ -1,13 +1,14 @@
 #include <catch2/catch.hpp>
 #include <trompeloeil.hpp>
 #include "cop/detail/HandlerWrapper.hpp"
+#include "cop/Event.hpp"
 
 enum events {
     eMyFirstEvent = 1,
     eMySecondEvent
 };
 
-struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
+struct myFirstEvent : cop::Event<eMyFirstEvent> {
     int data = 41;
     template<class Coder>
     auto parse(Coder coder) {
@@ -15,7 +16,7 @@ struct myFirstEvent : cop::Id_t<eMyFirstEvent> {
     }
 };
 
-struct mySecondEvent : cop::Id_t<eMySecondEvent> {
+struct mySecondEvent : cop::Event<eMySecondEvent> {
     int data = 42;
     double d = 2.9;
     int* c;
@@ -49,7 +50,7 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
             cop::detail::HandlerWrapper<Handler, WriteIt, std::tuple<mySecondEvent>, true> handler;
         
 
-            auto error = handler.handle(eMySecondEvent, buf.begin(), buf.end());
+            auto error = handler.handleEvent(eMySecondEvent, buf.begin(), buf.end());
 
             THEN("a message is created") {
                 REQUIRE(cop::ProtocolErrc::success ==  error );
