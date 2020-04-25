@@ -6,59 +6,59 @@
 
 namespace cop {
 
-template<class WriteIt>
-class BinaryReceiveFramer {
-    static const std::byte FRAME_START_END{'A'};
-    static const std::byte ESCAPE_CHARACTER{'\\'};
+template<class Iterator>
+class BinaryFramer {
+    static constexpr std::byte FRAME_START_END{'A'};
+    static constexpr std::byte ESCAPE_CHARACTER{'\\'};
 
     enum class ReceiveState : uint8_t {
-        ReadyToReceive,
-        Receiving,
-        Stuffing
+        ready,
+        transfering,
+        stuffing
     };
 
-    std::reference_wrapper<WriteIt> it_;
-    std::reference_wrapper<WriteIt> end_;
+    std::reference_wrapper<Iterator> it_;
+    std::reference_wrapper<Iterator> end_;
     ReceiveState state_;
 public:
-    BinaryReceiveFramer(WriteIt& it, WriteIt& end)
+    BinaryFramer(Iterator& it, Iterator& end)
     : it_(it)
     , end_(end)
-    , state_(ReceiveState::ReadyToReceive)
+    , state_(ReceiveState::ready)
     {}
 
     ProtocolErrc receive(std::byte data) {
         switch(state_) {
-        case ReceiveState::ReadyToReceive:
+        case ReceiveState::ready:
         {
             if(FRAME_START_END == data) {
-                state_ = ReceiveState::Receiving;
+                state_ = ReceiveState::transfering;
             }
             break;
         }
-        case ReceiveState::Receiving:
+        case ReceiveState::transfering:
         {
             if(FRAME_START_END == data) {
-                state_ = ReceiveState::ReadyToReceive;
+                state_ = ReceiveState::ready;
                 break;
             }
             if(ESCAPE_CHARACTER == data) {
-                state_ = ReceiveState::Stuffing;
+                state_ = ReceiveState::stuffing;
                 break;
             }
             if(it_.get() == end_.get()) {
-                state_ = ReceiveState::ReadyToReceive;
+                state_ = ReceiveState::ready;
                 return ProtocolErrc::not_enough_space_in_buffer;
             }
             *it_.get() = data;
             ++it_.get();
             break;
         }
-        case ReceiveState::Stuffing:
+        case ReceiveState::stuffing:
         {
-            state_ = ReceiveState::Receiving;
+            state_ = ReceiveState::transfering;
             if(it_.get() == end_.get()) {
-                state_ = ReceiveState::ReadyToReceive;
+                state_ = ReceiveState::ready;
                 return ProtocolErrc::not_enough_space_in_buffer;
             }
             *it_.get() = data;
@@ -71,6 +71,40 @@ public:
 
         }
         return ProtocolErrc::success;
+    }
+
+    std::optional<std::byte> send() {
+        if(it_.get() == end_.get() && state_ != ReceiveState::ready) {
+            state_ = ReceiveState::ready;
+            return FRAME_START_END;
+        }
+        if(it_.get() != end_.get()) {
+            switch(state_) {
+                case ReceiveState::ready:
+                {
+                    state_ = ReceiveState::transfering;
+                    return FRAME_START_END;
+                }
+                case ReceiveState::transfering:
+                {
+                    if(FRAME_START_END == *it_.get() || ESCAPE_CHARACTER == *it_.get()) {
+                        state_ = ReceiveState::stuffing;
+                        return ESCAPE_CHARACTER;
+                    }
+                    return *it_.get()++;
+                }
+                case ReceiveState::stuffing:
+                {
+                    state_ = ReceiveState::transfering;
+                    return *it_.get()++;
+                }
+                default:
+                {
+                    return std::optional<std::byte>();
+                }
+            }
+        }
+        return std::optional<std::byte>();
     }
 };
 
