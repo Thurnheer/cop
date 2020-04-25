@@ -37,11 +37,11 @@ namespace cop {
 
         ProtocolErrc deserialize(std::byte* data, size_t size) {
             for(size_t i = 0; i < size; ++i) {
-                if(it_ == end_) {
+                if(it_.get() == end_) {
                     return ProtocolErrc::not_enough_data;
                 }
-                *data = *it_;
-                ++it_;
+                *data = *it_.get();
+                ++it_.get();
                 ++data;
             }
             return ProtocolErrc::success;
@@ -83,11 +83,11 @@ namespace cop {
 
         ProtocolErrc serialize(std::byte const* data, size_t size) const {
             for(size_t i = 0; i < size; ++i) {
-                if(it_ == end_) {
+                if(it_.get() == end_.get()) {
                     return ProtocolErrc::not_enough_space_in_buffer;
                 }
-                *it_ = *data;
-                ++it_;
+                *it_.get() = *data;
+                ++it_.get();
                 ++data;
             }
             return ProtocolErrc::success;
