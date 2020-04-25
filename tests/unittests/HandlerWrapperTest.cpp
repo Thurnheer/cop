@@ -56,16 +56,6 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
                 REQUIRE(cop::ProtocolErrc::success ==  error );
             }
         
-            /*THEN("it will create the message") {
-                myEvent* a = dynamic_cast<myEvent*>(ptr.get());
-
-                if(a) {
-                    REQUIRE(41 == a->data);
-                }
-                else {
-                    REQUIRE(false);
-                }
-            }*/
         }
 
         
