@@ -21,5 +21,32 @@ target_link_libraries( ${PROJECT_NAME}
     cop_unittests::cop_unittests
 )
 
+target_compile_options( ${PROJECT_NAME}
+    PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Werror
+    -Wshadow
+    -Wnon-virtual-dtor
+    -pedantic
+    -Wold-style-cast
+    -Wcast-align
+    -Wunused
+    -Woverloaded-virtual
+    -Wconversion
+    -Wsign-conversion
+    -Wmisleading-indentation
+    -Wduplicated-cond
+    -Wduplicated-branches
+    -Wlogical-op
+    -Wnull-dereference
+    -Wuseless-cast
+    -Wdouble-promotion
+    -Wformat=2
+    -Weffc++
+)
+
+
 
 

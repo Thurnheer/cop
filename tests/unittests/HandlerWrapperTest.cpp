@@ -19,7 +19,6 @@ struct myFirstEvent : cop::Event<eMyFirstEvent> {
 struct mySecondEvent : cop::Event<eMySecondEvent> {
     int data = 42;
     double d = 2.9;
-    int* c;
 
     template<class Coder>
     auto parse(Coder coder) {

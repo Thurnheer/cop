@@ -38,6 +38,32 @@ target_link_libraries(${TESTS_NAME}
     cop_integrationtests::cop_integrationtests
 )
 
+target_compile_options(${TESTS_NAME}
+    PRIVATE
+    -Wall
+    -Wextra
+    -Wpedantic
+    -Werror
+    -Wshadow
+    -Wnon-virtual-dtor
+    -pedantic
+    -Wold-style-cast
+    -Wcast-align
+    -Wunused
+    -Woverloaded-virtual
+    -Wconversion
+    -Wsign-conversion
+    -Wmisleading-indentation
+    -Wduplicated-cond
+    -Wduplicated-branches
+    -Wlogical-op
+    -Wnull-dereference
+    -Wuseless-cast
+    -Wdouble-promotion
+    -Wformat=2
+    -Weffc++
+)
+
 enable_testing()
 find_package(Catch2 REQUIRED)
 find_package( trompeloeil REQUIRED )
