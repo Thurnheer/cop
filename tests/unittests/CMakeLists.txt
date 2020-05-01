@@ -14,6 +14,7 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/ChannelImplTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/BinaryFramerTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/HeaderTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/FieldTest.cpp
 )
 
 target_link_libraries( ${PROJECT_NAME}
