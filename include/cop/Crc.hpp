@@ -79,7 +79,7 @@ class Crc {
     std::reference_wrapper<Iterator> end_;
     uint16_t crc_;
 
-    void calcCrc() {
+    void calcCrc() noexcept {
 
         while (std::distance(it_.get(), end_.get()) > 2) {
 
@@ -90,10 +90,10 @@ class Crc {
     }
 
 public:
-    Crc(Iterator& it, Iterator& end) : it_(it), end_(end), crc_(CRC_START)
+    Crc(Iterator& it, Iterator& end) noexcept : it_(it), end_(end), crc_(CRC_START)
     {}
 
-    ProtocolErrc send() {
+    ProtocolErrc send() noexcept {
         if(std::distance(it_.get(), end_.get()) <= 2) {
             return ProtocolErrc::not_enough_space_in_buffer;
         }
@@ -104,7 +104,7 @@ public:
         return ProtocolErrc::success;
     }
 
-    ProtocolErrc receive() {
+    ProtocolErrc receive() noexcept {
         calcCrc();
         uint16_t crc = std::to_integer<uint16_t>(*it_.get()++);
         crc = static_cast<uint16_t>(crc << 8);
@@ -115,9 +115,6 @@ public:
         return ProtocolErrc::crc_error;
     }
 
-    bool crcCorrect() {
-        return false;
-    }
 };
 }
 

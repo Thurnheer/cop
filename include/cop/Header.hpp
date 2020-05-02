@@ -24,15 +24,15 @@ class Header {
     std::bitset<8> header_;
 
 public:
-    Header(Iterator& it, Iterator& end) : it_(it), end_(end), header_(0)
+    Header(Iterator& it, Iterator& end) noexcept : it_(it), end_(end), header_(0)
     { }
 
-    ProtocolErrc receive() {
+    ProtocolErrc receive() noexcept {
         header_ = std::to_integer<unsigned char>(*it_.get()++);
         return ProtocolErrc::success;
     }
 
-    ProtocolErrc send() {
+    ProtocolErrc send() noexcept {
         if(it_.get() == end_.get()) {
             return ProtocolErrc::not_enough_space_in_buffer;
         }
@@ -40,37 +40,37 @@ public:
         return ProtocolErrc::success;
     }
 
-    bool adressed() const {
+    bool adressed() const noexcept {
         return header_[eAdressed];
     }
 
-    void adressed(bool val) {
+    void adressed(bool val) noexcept {
         header_[eAdressed] = val;
     }
 
-    bool event() const {
+    bool event() const noexcept {
         return header_[eEvent] && !header_[eCommand];
     }
 
-    void event(bool val) {
+    void event(bool val) noexcept {
         header_[eEvent] = val;
         header_[eCommand] = !val;
     }
 
-    bool command() const {
+    bool command() const noexcept {
         return header_[eCommand] && !header_[eEvent];
     }
 
-    void command(bool val) {
+    void command(bool val) noexcept {
         header_[eEvent] = !val;
         header_[eCommand] = val;
     }
 
-    bool reply() const {
+    bool reply() const noexcept {
         return !header_[eCommand] && !header_[eEvent];
     }
 
-    void reply(bool val) {
+    void reply(bool val) noexcept {
         header_[eEvent] = !val;
         header_[eCommand] = !val;
     }

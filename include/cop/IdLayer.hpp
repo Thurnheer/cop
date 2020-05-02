@@ -36,7 +36,7 @@ public:
                                     decltype(detail::DynamicMemoryPolicy<T>::MessagePtr)
                                    >::type;
 
-    ProtocolErrc read( ID_t id) {
+    ProtocolErrc read( ID_t id) noexcept {
         /*Field field;
         if(auto e = field.read()) {
             return e;

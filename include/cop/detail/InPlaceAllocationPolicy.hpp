@@ -19,7 +19,7 @@ namespace cop::detail {
         };
         using MessagePtr = std::unique_ptr<Message, InPlaceDeleter<Message> >;
 
-        MessagePtr allocateMessage() {
+        MessagePtr allocateMessage() noexcept {
             new (&storage_) Message();
             return MessagePtr( reinterpret_cast<Message*>(&storage_),
                     InPlaceDeleter<Message>());

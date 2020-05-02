@@ -21,13 +21,13 @@ class BinaryFramer {
     std::reference_wrapper<Iterator> end_;
     ReceiveState state_;
 public:
-    BinaryFramer(Iterator& it, Iterator& end)
+    BinaryFramer(Iterator& it, Iterator& end) noexcept
     : it_(it)
     , end_(end)
     , state_(ReceiveState::ready)
     {}
 
-    ProtocolErrc receive(std::byte data) {
+    ProtocolErrc receive(std::byte data) noexcept {
         switch(state_) {
         case ReceiveState::ready:
         {
@@ -73,7 +73,7 @@ public:
         return ProtocolErrc::success;
     }
 
-    std::optional<std::byte> send() {
+    std::optional<std::byte> send() noexcept {
         if(it_.get() == end_.get() && state_ != ReceiveState::ready) {
             state_ = ReceiveState::ready;
             return FRAME_START_END;

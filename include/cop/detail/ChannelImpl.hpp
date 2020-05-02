@@ -15,7 +15,7 @@ namespace cop::detail {
 
     public:
         template<class Event>
-        cop::ProtocolErrc sendEvent(Event& event, ReadIt it, ReadIt end) const {
+        cop::ProtocolErrc sendEvent(Event& event, ReadIt it, ReadIt end) const noexcept {
             static_assert(std::is_same_v<typename Event::type, EventT>, "event has to be of type EventT");
             auto r = event.parse(BinarySendCoder(it, end));
             if(r) {
@@ -25,7 +25,7 @@ namespace cop::detail {
         }
 
         template<class Event>
-        cop::ProtocolErrc sendEvent(Event event, ReadIt it, ReadIt end) const {
+        cop::ProtocolErrc sendEvent(Event event, ReadIt it, ReadIt end) const noexcept {
             static_assert(std::is_same_v<typename Event::type, EventT>, "event has to be of type EventT");
             auto r = event.parse(BinarySendCoder(it, end));
             if(r) {
@@ -35,7 +35,7 @@ namespace cop::detail {
         }
 
         template<class Command>
-        cop::ProtocolErrc sendCommand(Command& command, ReadIt it, ReadIt end) {
+        cop::ProtocolErrc sendCommand(Command& command, ReadIt it, ReadIt end) noexcept {
             static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
             auto r = command.parse(BinarySendCoder(it, end));
             if(r) {
@@ -45,7 +45,7 @@ namespace cop::detail {
         }
 
         template<class Command>
-        cop::ProtocolErrc sendCommand(Command command, ReadIt it, ReadIt end) {
+        cop::ProtocolErrc sendCommand(Command command, ReadIt it, ReadIt end) noexcept {
             static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
             auto r = command.parse(BinarySendCoder(it, end));
             if(r) {
