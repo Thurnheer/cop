@@ -12,7 +12,7 @@ SCENARIO("The Crc will be calculated", "[CRC]") {
 
         cop::Crc crc(it, end);
 
-        THEN("the crc will be calculated") {
+        THEN("the crc will be appended") {
             crc.send();
 
             REQUIRE(std::byte(0x42) == data[9]);
@@ -29,10 +29,16 @@ SCENARIO("The Crc will be calculated", "[CRC]") {
         };
         auto it = data.cbegin(); auto end = data.cend();
 
-        cop::Crc crc(it, end);
 
-        THEN(" the crc will be apended") {
+        THEN(" the crc will be checked") {
+            cop::Crc crc(it, end);
             REQUIRE(cop::ProtocolErrc::success == crc.receive());
+        }
+
+        THEN(" the crc will be checked, and an error reported") {
+            data[10] = std::byte(0xD3); // instead of 0x3D
+            cop::Crc crc(it, end);
+            REQUIRE(cop::ProtocolErrc::crc_error == crc.receive());
         }
     }
 }

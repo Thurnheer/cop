@@ -71,13 +71,13 @@ constexpr std::array<uint16_t,256> init_crc16_tab( void ) {
 }  /* init_crc16_tab */
 
 constexpr std::array<uint16_t, 256> crc_table16 = init_crc16_tab();
+static constexpr uint16_t CRC_START = 0x00;
 
 template<class Iterator>
 class Crc {
     std::reference_wrapper<Iterator> it_;
     std::reference_wrapper<Iterator> end_;
     uint16_t crc_;
-    static constexpr uint16_t CRC_START = 0x00;
 
     void calcCrc() {
 
