@@ -11,7 +11,8 @@ enum class ProtocolErrc
     invalid_message_id,
     not_enough_space_in_buffer,
     not_enough_data,
-    framing_error
+    framing_error,
+    crc_error
 };
 
 std::error_code make_error_code(ProtocolErrc);

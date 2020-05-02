@@ -15,6 +15,7 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/BinaryFramerTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/HeaderTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/FieldTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/CrcTest.cpp
 )
 
 target_link_libraries( ${PROJECT_NAME}
