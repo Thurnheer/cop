@@ -9,6 +9,7 @@ To be able to parse your data one needs to declare a templated parse function.
 
 Like:
 
+```cpp
 struct myEvent : cop::Event<myId> {
 int iData;
 double dData;
@@ -21,3 +22,4 @@ auto parse(Coder coder) {
 
 cop::Channel channel;
 channel.send(myEvent());
+```
