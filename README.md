@@ -10,6 +10,11 @@ To be able to parse your data one needs to declare a templated parse function.
 Like:
 
 ```cpp
+
+enum Ids {
+  myId = 101
+};
+
 struct myEvent : cop::Event<myId> {
 int iData;
 double dData;
