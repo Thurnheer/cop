@@ -36,8 +36,14 @@ auto parse(Coder coder) {
 }
 };
 
-cop::Channel channel;
+cop::Channel<allMessages> channel;
 channel.send(myEvent());
+```
+The channel has also an optional parameter to specify if the messages are created within a local buffer (size of the bigest message) or dynamicaly on the heap.
+e.g.
+```cpp
+constexpr bool useStaticMemory = true;
+cop::Channel<allMessages, useStaticMemory> channel;
 ```
 
 A frame consist of a start and end frame byte (ASCII 'A') and escape byte (ASCII backslasch '\') 
