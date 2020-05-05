@@ -39,3 +39,11 @@ auto parse(Coder coder) {
 cop::Channel channel;
 channel.send(myEvent());
 ```
+
+A frame consist of a start and end frame byte (ASCII 'A') and escape byte (ASCII backslasch '\') 
+Then it has an one byte header 
+bit 1/2 are for indicating if it is an event or a command
+
+Then a 2 byte identifier field to indicate the event or command id.
+Then the actual binary data commes.
+To verify if the transmition was correct a 16Bit crc is used. ( implementation from https://github.com/lammertb/libcrc/blob/master/src/crc16.c )
