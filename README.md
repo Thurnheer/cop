@@ -6,6 +6,14 @@ This means there are no dependencies to heap allocation or threading.
 
 The basic idea is to have a serial communication protocol where one can define Commands (they are for sure delivered like e.g. TCP) and one can send events (no garanties to be delivered e.g. like UDP).
 
+One needs to declare all Events and Commands which will be sent or received to the channel as a tuple.
+This is only needed to know the types, the tuple does not need to be initialised and will not be by the library.
+
+```cpp
+using allMessages = std::tuple<myEvent, theOtherEvent, ...>
+cop::Channel<allMessages> channel;
+```
+
 To send an Event just inherit from Event.
 To be able to parse your data one needs to declare a templated parse function.
 
