@@ -53,3 +53,5 @@ bit 1/2 are for indicating if it is an event or a command
 Then a 2 byte identifier field to indicate the event or command id.
 Then the actual binary data commes.
 To verify if the transmition was correct a 16Bit crc is used. ( implementation from https://github.com/lammertb/libcrc/blob/master/src/crc16.c )
+
+currently only tested on gcc 9.3
