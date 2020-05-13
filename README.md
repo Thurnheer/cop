@@ -1,6 +1,8 @@
 # cop
 Communication protocol. A comunication protocol for embedded devices written in C++. This is a header only library developed in TDD style.
 
+Still work in progress, not ready yet.
+
 The intention is to have the same stack running on small microconrollers and on "big" hosts like PC's.
 This means there are no dependencies to heap allocation or threading.
 
