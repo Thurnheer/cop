@@ -7,7 +7,6 @@
 
 namespace cop {
 
-template<class Iterator>
 class Header {
     enum headerbits {
         eAdressed = 0,
@@ -19,24 +18,27 @@ class Header {
         eReserved3 = 6,
         eAditionalHeader =  7
     };
-    std::reference_wrapper<Iterator> it_;
-    std::reference_wrapper<Iterator> end_;
     std::bitset<8> header_;
 
 public:
-    Header(Iterator& it, Iterator& end) noexcept : it_(it), end_(end), header_(0)
+    Header() noexcept : header_(0)
     { }
 
-    ProtocolErrc receive() noexcept {
-        header_ = std::to_integer<unsigned char>(*it_.get()++);
+    template<class Iterator>
+    ProtocolErrc receive(Iterator& it, Iterator& end) noexcept {
+        if(it == end) {
+            return ProtocolErrc::not_enough_space_in_buffer;
+        }
+        header_ = std::to_integer<unsigned char>(*it++);
         return ProtocolErrc::success;
     }
 
-    ProtocolErrc send() noexcept {
-        if(it_.get() == end_.get()) {
+    template<class Iterator>
+    ProtocolErrc send(Iterator& it, Iterator& end) noexcept {
+        if(it == end) {
             return ProtocolErrc::not_enough_space_in_buffer;
         }
-        *it_.get()++ = std::byte(header_.to_ulong());
+        *it++ = std::byte(header_.to_ulong());
         return ProtocolErrc::success;
     }
 
