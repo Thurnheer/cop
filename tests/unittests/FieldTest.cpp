@@ -6,12 +6,12 @@ SCENARIO("The field has a value and can be serialized") {
         std::vector data{ std::byte(0x0), std::byte(0x0)};
         auto it = data.begin(); auto end = data.end();
 
-        cop::Field field(it, end);
+        cop::Field field;
         field.value(4080);
 
         THEN(" it is serialized") {
 
-            field.send();
+            field.send(it, end);
 
             REQUIRE(data[0] == std::byte(0x0F));
             REQUIRE(data[1] == std::byte(0xF0));
@@ -22,10 +22,10 @@ SCENARIO("The field has a value and can be serialized") {
         std::vector data{ std::byte(0xF0), std::byte(0x0F)};
         auto it = data.cbegin(); auto end = data.cend();
 
-        cop::Field field(it, end);
+        cop::Field field;
         THEN("it can be deserialised") {
 
-            field.receive();
+            field.receive(it, end);
 
             REQUIRE(61455 == field.value());
         }

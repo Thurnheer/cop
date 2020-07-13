@@ -12,7 +12,9 @@ enum class ProtocolErrc
     not_enough_space_in_buffer,
     not_enough_data,
     framing_error,
-    crc_error
+    crc_error,
+    unexpected_frame_end,
+    receiving
 };
 
 std::error_code make_error_code(ProtocolErrc);

@@ -73,42 +73,45 @@ constexpr std::array<uint16_t,256> init_crc16_tab( void ) {
 constexpr std::array<uint16_t, 256> crc_table16 = init_crc16_tab();
 static constexpr uint16_t CRC_START = 0x00;
 
-template<class Iterator>
 class Crc {
-    std::reference_wrapper<Iterator> it_;
-    std::reference_wrapper<Iterator> end_;
     uint16_t crc_;
 
-    void calcCrc() noexcept {
+    template<class Iterator>
+    void calcCrc(Iterator& it, Iterator& end) noexcept {
 
-        while (std::distance(it_.get(), end_.get()) > 2) {
+        while (std::distance(it, end) > 2) {
 
             crc_ = static_cast<uint16_t>((crc_ >> 8)
-                ^ crc_table16[ (crc_ ^ static_cast<uint16_t>(*it_.get()++)) & 0x00FF ]);
+                ^ crc_table16[ (crc_ ^ static_cast<uint16_t>(*it++)) & 0x00FF ]);
 
         }
     }
 
 public:
-    Crc(Iterator& it, Iterator& end) noexcept : it_(it), end_(end), crc_(CRC_START)
+    Crc() noexcept : crc_(CRC_START)
     {}
 
-    ProtocolErrc send() noexcept {
-        if(std::distance(it_.get(), end_.get()) <= 2) {
+    template<class Iterator>
+    ProtocolErrc send(Iterator& it, Iterator& end) noexcept {
+        if(std::distance(it, end) <= 2) {
             return ProtocolErrc::not_enough_space_in_buffer;
         }
-        calcCrc();
+        calcCrc(it, end);
 
-        *it_.get()++ = std::byte(crc_ >> 8);
-        *it_.get()++ = std::byte(crc_ & 0x00FF);
+        *it++ = std::byte(crc_ >> 8);
+        *it++ = std::byte(crc_ & 0x00FF);
         return ProtocolErrc::success;
     }
 
-    ProtocolErrc receive() noexcept {
-        calcCrc();
-        uint16_t crc = std::to_integer<uint16_t>(*it_.get()++);
+    template<class Iterator>
+    ProtocolErrc receive(Iterator& it, Iterator& end) noexcept {
+        if(it == end) {
+            return ProtocolErrc::not_enough_data;
+        }
+        calcCrc(it, end);
+        uint16_t crc = std::to_integer<uint16_t>(*it++);
         crc = static_cast<uint16_t>(crc << 8);
-        crc = static_cast<uint16_t>(crc + std::to_integer<uint16_t>(*it_.get()++));
+        crc = static_cast<uint16_t>(crc + std::to_integer<uint16_t>(*it++));
         if(crc_  == crc) {
             return ProtocolErrc::success;
         }

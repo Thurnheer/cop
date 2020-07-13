@@ -8,9 +8,6 @@
 namespace cop {
 
 class BinaryFramer {
-    static constexpr std::byte FRAME_START_END{'A'};
-    static constexpr std::byte ESCAPE_CHARACTER{'\\'};
-
     enum class ReceiveState : uint8_t {
         ready,
         transfering,
@@ -19,6 +16,9 @@ class BinaryFramer {
 
     ReceiveState state_;
 public:
+    static constexpr std::byte FRAME_START_END{'A'};
+    static constexpr std::byte ESCAPE_CHARACTER{'\\'};
+
     using type = FramerT;
     BinaryFramer() noexcept
     : state_(ReceiveState::ready)
@@ -38,7 +38,7 @@ public:
         {
             if(FRAME_START_END == data) {
                 state_ = ReceiveState::ready;
-                break;
+                return ProtocolErrc::success;
             }
             if(ESCAPE_CHARACTER == data) {
                 state_ = ReceiveState::stuffing;
@@ -68,7 +68,7 @@ public:
             return ProtocolErrc::framing_error;
 
         }
-        return ProtocolErrc::success;
+        return ProtocolErrc::receiving;
     }
 
     template<class Iterator>

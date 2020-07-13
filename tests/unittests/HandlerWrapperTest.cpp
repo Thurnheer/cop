@@ -49,7 +49,7 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
             cop::detail::HandlerWrapper<Handler, ReadIt, std::tuple<mySecondEvent>, true> handler;
         
 
-            auto error = handler.handleEvent(eMySecondEvent, buf.begin(), buf.end());
+            const auto error = handler.handleEvent(eMySecondEvent, buf.begin(), buf.end());
 
             THEN("a message is created") {
                 REQUIRE(cop::ProtocolErrc::success ==  error );
