@@ -3,10 +3,11 @@
 
 #include "cop/BinaryFramer.hpp"
 #include "cop/Crc.hpp"
+#include "cop/detail/Empty.hpp"
 
 namespace cop {
 
-template<class Iterator>
+template<class Iterator, class Next = detail::Empty>
 class DataLinkLayer {
     Iterator startIterator_;
     Iterator endIterator_;
@@ -14,18 +15,42 @@ class DataLinkLayer {
     Iterator end_;
     BinaryFramer framer_;
     Crc crc_;
+    Next next_;
 
 public:
-    DataLinkLayer(Iterator it, Iterator end) : startIterator_(it), endIterator_(end), it_(it), end_(end), framer_(), crc_() {
+    DataLinkLayer(Iterator it, Iterator end) : startIterator_(it), endIterator_(end), it_(it),
+    end_(end), framer_(), crc_(), next_()
+    {
 
     }
 
     ProtocolErrc receive(std::byte data) {
-        if(ProtocolErrc::success == framer_.receive(std::forward<std::byte>(data), it_, end_))
+        const auto result = framer_.receive(std::forward<std::byte>(data), it_, end_);
+        if(ProtocolErrc::success == result)
         {
-            return crc_.receive(startIterator_, endIterator_);
+            if constexpr (std::is_same_v<Next, detail::Empty>)
+                return crc_.receive(startIterator_, endIterator_);
+            else {
+                if(ProtocolErrc::success == crc_.receive(startIterator_, endIterator_)) {
+                    return next_.receive(it_, end_);
+                }
+            }
         }
-        return ProtocolErrc::receiving;
+        return result;
+    }
+
+    template<class FrameAdapter>
+    ProtocolErrc send(FrameAdapter& frameAdapter) {
+        auto ret = crc_.send(it_, end_);
+        if(ProtocolErrc::success == ret) {
+            while(it_ != end_) {
+                auto data = framer_.send(it_, end_);
+                if(data) {
+                    frameAdapter.send(*data);
+                }
+            }
+        }
+        return ret;
     }
 };
 

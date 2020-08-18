@@ -92,7 +92,7 @@ public:
     {}
 
     template<class Iterator>
-    ProtocolErrc send(Iterator& it, Iterator& end) noexcept {
+    ProtocolErrc send(Iterator it, Iterator end) noexcept {
         if(std::distance(it, end) <= 2) {
             return ProtocolErrc::not_enough_space_in_buffer;
         }

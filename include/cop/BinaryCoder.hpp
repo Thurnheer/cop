@@ -37,7 +37,7 @@ namespace cop {
 
         ProtocolErrc deserialize(std::byte* data, size_t size) noexcept{
             for(size_t i = 0; i < size; ++i) {
-                if(it_.get() == end_) {
+                if(it_.get() == end_.get()) {
                     return ProtocolErrc::not_enough_data;
                 }
                 *data = *it_.get();

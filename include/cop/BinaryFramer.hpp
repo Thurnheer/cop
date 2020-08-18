@@ -8,55 +8,55 @@
 namespace cop {
 
 class BinaryFramer {
-    enum class ReceiveState : uint8_t {
+    enum class FrameState : uint8_t {
         ready,
         transfering,
         stuffing
     };
 
-    ReceiveState state_;
+    FrameState state_;
 public:
     static constexpr std::byte FRAME_START_END{'A'};
     static constexpr std::byte ESCAPE_CHARACTER{'\\'};
 
     using type = FramerT;
     BinaryFramer() noexcept
-    : state_(ReceiveState::ready)
+    : state_(FrameState::ready)
     {}
 
     template<class Iterator>
     ProtocolErrc receive(std::byte data, Iterator& it, Iterator& end) noexcept {
         switch(state_) {
-        case ReceiveState::ready:
+        case FrameState::ready:
         {
             if(FRAME_START_END == data) {
-                state_ = ReceiveState::transfering;
+                state_ = FrameState::transfering;
             }
             break;
         }
-        case ReceiveState::transfering:
+        case FrameState::transfering:
         {
             if(FRAME_START_END == data) {
-                state_ = ReceiveState::ready;
+                state_ = FrameState::ready;
                 return ProtocolErrc::success;
             }
             if(ESCAPE_CHARACTER == data) {
-                state_ = ReceiveState::stuffing;
+                state_ = FrameState::stuffing;
                 break;
             }
             if(it == end) {
-                state_ = ReceiveState::ready;
+                state_ = FrameState::ready;
                 return ProtocolErrc::not_enough_space_in_buffer;
             }
             *it = data;
             ++it;
             break;
         }
-        case ReceiveState::stuffing:
+        case FrameState::stuffing:
         {
-            state_ = ReceiveState::transfering;
+            state_ = FrameState::transfering;
             if(it == end) {
-                state_ = ReceiveState::ready;
+                state_ = FrameState::ready;
                 return ProtocolErrc::not_enough_space_in_buffer;
             }
             *it = data;
@@ -73,28 +73,28 @@ public:
 
     template<class Iterator>
     std::optional<std::byte> send(Iterator& it, Iterator& end) noexcept {
-        if(it == end && state_ != ReceiveState::ready) {
-            state_ = ReceiveState::ready;
+        if(it == end && state_ != FrameState::ready) {
+            state_ = FrameState::ready;
             return FRAME_START_END;
         }
         if(it != end) {
             switch(state_) {
-                case ReceiveState::ready:
+                case FrameState::ready:
                 {
-                    state_ = ReceiveState::transfering;
+                    state_ = FrameState::transfering;
                     return FRAME_START_END;
                 }
-                case ReceiveState::transfering:
+                case FrameState::transfering:
                 {
                     if(FRAME_START_END == *it || ESCAPE_CHARACTER == *it) {
-                        state_ = ReceiveState::stuffing;
+                        state_ = FrameState::stuffing;
                         return ESCAPE_CHARACTER;
                     }
                     return *it++;
                 }
-                case ReceiveState::stuffing:
+                case FrameState::stuffing:
                 {
-                    state_ = ReceiveState::transfering;
+                    state_ = FrameState::transfering;
                     return *it++;
                 }
                 default:
