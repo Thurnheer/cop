@@ -13,6 +13,7 @@ target_sources(${PROJECT_NAME}
     ${CMAKE_CURRENT_SOURCE_DIR}/Event.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/InterpreterTest.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/DataLinkLayerTest.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TransportLinkLayerTest.cpp
 )
 
 

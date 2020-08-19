@@ -35,7 +35,7 @@ namespace cop::detail {
         struct HandleInvoker<AllTypes, typename std::enable_if<std::is_same_v<std::tuple<>,
         AllTypes> >::type > {
             cop::ProtocolErrc handle(ID_t, WriteIt&, WriteIt&) {
-                return ProtocolErrc::invalid_message_id;
+                return ProtocolErrc::invalid_message_type;
             }
         };
         template<class FirstType, class ...AllTypes>

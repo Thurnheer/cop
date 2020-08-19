@@ -9,6 +9,7 @@ enum class ProtocolErrc
 {
     success = 0,
     invalid_message_id,
+    invalid_message_type,
     not_enough_space_in_buffer,
     not_enough_data,
     framing_error,
