@@ -29,10 +29,17 @@ namespace cop::detail {
                                             DynamicMemoryPolicy<T>
                                         >::type;
         
-        template<class AllTypes>
+        template<class AllTypes, typename T = void>
         struct HandleInvoker;
-        template<class ...AllTypes>
-        struct HandleInvoker<std::tuple<AllTypes...> > {
+        template<class AllTypes> // For empty tuples
+        struct HandleInvoker<AllTypes, typename std::enable_if<std::is_same_v<std::tuple<>,
+        AllTypes> >::type > {
+            cop::ProtocolErrc handle(ID_t, WriteIt&, WriteIt&) {
+                return ProtocolErrc::invalid_message_id;
+            }
+        };
+        template<class FirstType, class ...AllTypes>
+        struct HandleInvoker<std::tuple<FirstType, AllTypes...> > {
             template<class First, class... Rest>
             cop::ProtocolErrc handle_impl(ID_t id, WriteIt& it, WriteIt& end) {
                 if(id == First::ID) {
@@ -51,7 +58,7 @@ namespace cop::detail {
                 return ProtocolErrc::invalid_message_id;
             }
             cop::ProtocolErrc handle(ID_t id, WriteIt& it, WriteIt& end) {
-                return handle_impl<AllTypes...>(id, it, end);
+                return handle_impl<FirstType, AllTypes...>(id, it, end);
             }
         private:
             HandlerT handler_;
