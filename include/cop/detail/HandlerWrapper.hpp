@@ -32,14 +32,15 @@ namespace cop::detail {
         template<class AllTypes, typename T = void>
         struct HandleInvoker;
         template<class AllTypes> // For empty tuples
-        struct HandleInvoker<AllTypes, typename std::enable_if<std::is_same_v<std::tuple<>,
-        AllTypes> >::type > {
+        struct HandleInvoker<AllTypes, typename std::enable_if<std::is_same_v<std::tuple<>, AllTypes> >::type > {
+        HandleInvoker(HandlerT&) {}
             cop::ProtocolErrc handle(ID_t, WriteIt&, WriteIt&) {
                 return ProtocolErrc::invalid_message_type;
             }
         };
         template<class FirstType, class ...AllTypes>
         struct HandleInvoker<std::tuple<FirstType, AllTypes...> > {
+            HandleInvoker(HandlerT& handler) : handler_(handler){}
             template<class First, class... Rest>
             cop::ProtocolErrc handle_impl(ID_t id, WriteIt& it, WriteIt& end) {
                 if(id == First::ID) {
@@ -61,7 +62,7 @@ namespace cop::detail {
                 return handle_impl<FirstType, AllTypes...>(id, it, end);
             }
         private:
-            HandlerT handler_;
+            HandlerT& handler_;
         };
 
         HandleInvoker<AllEvents> eventHandler_;
@@ -75,6 +76,8 @@ namespace cop::detail {
         cop::ProtocolErrc handleCommand(ID_t id, WriteIt it, WriteIt end) {
             return commandHandler_.handle(id, it, end);
         }
+
+        HandlerWrapper(HandlerT& handler) : eventHandler_(handler), commandHandler_(handler){} 
     };
 
 }

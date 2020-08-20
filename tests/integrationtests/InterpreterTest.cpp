@@ -21,12 +21,6 @@ SCENARIO("The Frame defines how to interpret or serialise Messages", "[Frame]")
 {
     GIVEN("some data, and an event handler") {
 
-        struct Handler {
-            void handle(myEvent& e) {
-                REQUIRE(e.data == 'T');
-            }
-        };
-        
         std::vector buffer(6, std::byte(0));
         THEN("it will be interpreted and an Event generated") {
             const std::vector OUTPUT {

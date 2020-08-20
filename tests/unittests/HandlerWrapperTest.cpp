@@ -46,10 +46,12 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
                 {std::byte{1}, std::byte{0}, std::byte{0}, std::byte{0},
                  std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
             using ReadIt = std::array<std::byte, 1023>::const_iterator;
-            cop::detail::HandlerWrapper<Handler, ReadIt, std::tuple<mySecondEvent>, true> handler;
+            Handler handler;
+            cop::detail::HandlerWrapper<Handler, ReadIt, std::tuple<mySecondEvent>, true>
+            dut(handler);
         
 
-            const auto error = handler.handleEvent(eMySecondEvent, buf.begin(), buf.end());
+            const auto error = dut.handleEvent(eMySecondEvent, buf.begin(), buf.end());
 
             THEN("a message is created") {
                 REQUIRE(cop::ProtocolErrc::success ==  error );

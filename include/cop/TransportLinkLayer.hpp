@@ -25,6 +25,7 @@ class TransportLinkLayer {
 detail::HandlerWrapper<Handler, WriteIt, AllMessages, UsingStaticMemory> handler_;
 
 public:
+    TransportLinkLayer(Handler& handler) : handler_(handler){}
 
     ProtocolErrc receive(WriteIt& it, WriteIt& end) {
         Header header;
