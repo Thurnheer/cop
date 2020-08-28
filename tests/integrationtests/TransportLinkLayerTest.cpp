@@ -41,7 +41,7 @@ struct HandlerMock
 #pragma GCC diagnostic pop
 
 SCENARIO("The transport link layer chercks the header and creates the messages") {
-    GIVEN("A message") {
+    GIVEN("A buffer") {
         
         const std::array<std::byte, 1023> MESSAGE
             {std::byte{0x02}, std::byte{0}, std::byte{2}, std::byte{5},
@@ -63,7 +63,7 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
             REQUIRE(cop::ProtocolErrc::success == tll.receive(it, end));
         }
     }
-    GIVEN("A message with a wrong ID") {
+    GIVEN("A buffer with a wrong ID") {
         
         const std::array<std::byte, 1023> MESSAGE
             {std::byte{0x02}, std::byte{0}, std::byte{0}, std::byte{0},
@@ -78,6 +78,31 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
         cop::TransportLinkLayer<HandlerMock, ReadIt, std::tuple<mySecondEvent> > tll(handler);
         THEN("it will return an error") {
             REQUIRE(cop::ProtocolErrc::invalid_message_id == tll.receive(it, end));
+        }
+    }
+    GIVEN(" a message") {
+        mySecondEvent message;
+
+        std::array<std::byte, 512> buffer;
+        using ReadIt = std::array<std::byte, 512>::iterator;
+        auto it = buffer.begin(); auto end = buffer.end();
+        HandlerMock handler;
+        cop::TransportLinkLayer<HandlerMock, ReadIt, std::tuple<mySecondEvent> > tll(handler);
+        mySecondEvent secondEvent;
+        
+        THEN("it will be serialized into the buffer") {
+            REQUIRE( cop::ProtocolErrc::success == tll.sendEvent(secondEvent, it, end));
+            REQUIRE( buffer[0] == std::byte(2) );
+            REQUIRE( buffer[1] == std::byte(0) );
+            REQUIRE( buffer[2] == std::byte(2) );
+            REQUIRE( buffer[3] == std::byte(42) );
+            REQUIRE( buffer[4] == std::byte(0) );
+            REQUIRE( buffer[5] == std::byte(0) );
+            REQUIRE( buffer[6] == std::byte(0) );
+            REQUIRE( buffer[7] == std::byte(51) );
+            REQUIRE( buffer[8] == std::byte(51) );
+            REQUIRE( buffer[9] == std::byte(51) );
+            REQUIRE( buffer[10] == std::byte(51) );
         }
     }
 }

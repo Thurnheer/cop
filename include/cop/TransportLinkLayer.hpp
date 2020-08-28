@@ -5,6 +5,7 @@
 #include "cop/Field.hpp"
 #include "cop/detail/HandlerWrapper.hpp"
 #include "cop/Header.hpp"
+#include "cop/detail/ChannelImpl.hpp"
 
 //-----------------------------------------------------------------------------
 //
@@ -23,9 +24,10 @@ template<class Handler, class WriteIt, class AllMessages, bool UsingStaticMemory
 class TransportLinkLayer {
 
 detail::HandlerWrapper<Handler, WriteIt, AllMessages, UsingStaticMemory> handler_;
+detail::ChannelImpl<WriteIt> channel_;
 
 public:
-    TransportLinkLayer(Handler& handler) : handler_(handler){}
+    TransportLinkLayer(Handler& handler) : handler_(handler), channel_(){}
 
     ProtocolErrc receive(WriteIt& it, WriteIt& end) {
         Header header;
@@ -43,6 +45,22 @@ public:
                 else {
                     return ProtocolErrc::invalid_message_type;
                 }
+            }
+        }
+        return ret;
+    }
+
+    template<class Event>
+    ProtocolErrc sendEvent(Event&& event, WriteIt& it, WriteIt& end) {
+        Header header;
+        header.event(true);
+        auto ret = header.send(it, end);
+        if(ProtocolErrc::success == ret) {
+            Field id;
+            id.value(std::remove_reference_t<Event>::ID);
+            ret = id.send(it, end);
+            if(ProtocolErrc::success == ret) {
+                ret = channel_.sendEvent(std::forward<Event>(event), it, end);
             }
         }
         return ret;
