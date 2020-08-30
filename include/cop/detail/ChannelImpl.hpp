@@ -9,13 +9,12 @@
 
 namespace cop::detail {
 
-    template<class ReadIt>
     class ChannelImpl {
     private:
     // TODO react on endianness with std::endian
 
     public:
-        template<class Event>
+        template<class Event, class ReadIt>
         cop::ProtocolErrc sendEvent(Event event, ReadIt it, ReadIt end) const noexcept {
             static_assert(std::is_same_v<typename Event::type, EventT>, "event has to be of type EventT");
             auto r = event.parse(BinarySendCoder(it, end));
@@ -25,7 +24,7 @@ namespace cop::detail {
             return r.error();
         }
 
-        template<class Command>
+        template<class Command, class ReadIt>
         cop::ProtocolErrc sendCommand(Command command, ReadIt it, ReadIt end) noexcept {
             static_assert(std::is_same_v<typename Command::type, CommandT>, "command has to be of type CommandT");
             auto r = command.parse(BinarySendCoder(it, end));

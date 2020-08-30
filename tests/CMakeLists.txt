@@ -6,4 +6,6 @@ add_subdirectory( integrationtests )
 
 add_subdirectory( unittests )
 
+add_subdirectory( systemtests )
+
 

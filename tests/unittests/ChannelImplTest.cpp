@@ -42,9 +42,8 @@ SCENARIO( "The channel implemenation sends messages" ) {
         WHEN( "the event is sent" ) {
 
             std::array<std::byte, 32> buf;
-            using ReadIt = std::array<std::byte, 32>::iterator;
 
-            cop::detail::ChannelImpl<ReadIt> channel;
+            cop::detail::ChannelImpl channel;
             channel.sendEvent(std::move(FirstEvent()), buf.begin(), buf.end());
             THEN ( "it will be serialised" ) {
                 REQUIRE(buf[0] == std::byte{0x03});
@@ -57,9 +56,8 @@ SCENARIO( "The channel implemenation sends messages" ) {
                 std::byte(0x42), std::byte(0x42), std::byte(0x42), std::byte(0x42),
                 std::byte(0x42), std::byte(0x42)
             };
-            using ReadIt = std::array<std::byte, 32>::iterator;
 
-            cop::detail::ChannelImpl<ReadIt> channel;
+            cop::detail::ChannelImpl channel;
             channel.sendEvent(std::move(SecondEvent()), buf.begin(), buf.end());
 
             THEN ( "it will be serialised" ) {
@@ -84,9 +82,8 @@ SCENARIO( "The channel implemenation sends messages" ) {
                 std::byte(0x42), std::byte(0x42), std::byte(0x42), std::byte(0x42),
                 std::byte(0x42), std::byte(0x42)
             };
-            using ReadIt = std::array<std::byte, 32>::iterator;
 
-            cop::detail::ChannelImpl<ReadIt> channel;
+            cop::detail::ChannelImpl channel;
             channel.sendCommand(std::move(FirstCommand()), buf.begin(), buf.end());
 
             THEN ( "it will be serialised" ) {

@@ -24,7 +24,7 @@ template<class Handler, class WriteIt, class AllMessages, bool UsingStaticMemory
 class TransportLinkLayer {
 
 detail::HandlerWrapper<Handler, WriteIt, AllMessages, UsingStaticMemory> handler_;
-detail::ChannelImpl<WriteIt> channel_;
+detail::ChannelImpl channel_;
 
 public:
     TransportLinkLayer(Handler& handler) : handler_(handler), channel_(){}
@@ -51,7 +51,7 @@ public:
     }
 
     template<class Event>
-    ProtocolErrc sendEvent(Event&& event, WriteIt& it, WriteIt& end) {
+    ProtocolErrc sendEvent(Event&& event, WriteIt it, WriteIt end) {
         Header header;
         header.event(true);
         auto ret = header.send(it, end);

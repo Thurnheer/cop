@@ -27,7 +27,7 @@ SCENARIO("The data link layer checks the framing and crc", "[DataLinkLayer]") {
         struct FrameAdapter {
             FrameAdapter() : data_(){}
             std::vector<std::byte> data_;
-            void send(std::byte data) {
+            void send(std::byte data) noexcept {
                 data_.push_back(data);
             }
         };

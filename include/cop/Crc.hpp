@@ -109,6 +109,7 @@ public:
             return ProtocolErrc::not_enough_data;
         }
         calcCrc(it, end);
+        end = it;
         uint16_t crc = std::to_integer<uint16_t>(*it++);
         crc = static_cast<uint16_t>(crc << 8);
         crc = static_cast<uint16_t>(crc + std::to_integer<uint16_t>(*it++));

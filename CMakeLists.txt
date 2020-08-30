@@ -36,6 +36,7 @@ target_link_libraries(${TESTS_NAME}
     trompeloeil
     cop_unittests::cop_unittests
     cop_integrationtests::cop_integrationtests
+    cop_systemtests::cop_systemtests
 )
 
 target_compile_options(${TESTS_NAME}

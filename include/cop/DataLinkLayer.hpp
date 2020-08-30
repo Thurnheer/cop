@@ -4,13 +4,21 @@
 #include "cop/BinaryFramer.hpp"
 #include "cop/Crc.hpp"
 #include "cop/detail/Empty.hpp"
+#include <cstddef>
+#include <concepts>
 
 namespace cop {
+
+template<class T>
+concept Sendable = requires(T t, std::byte data)
+{
+    { t.send(data) } noexcept;
+};
 
 template<class Iterator, class Next = detail::Empty>
 class DataLinkLayer {
     Iterator startIterator_;
-    Iterator endIterator_;
+    Iterator& endIterator_;
     Iterator it_;
     Iterator end_;
     BinaryFramer framer_;
@@ -18,7 +26,7 @@ class DataLinkLayer {
     Next next_;
 
 public:
-    DataLinkLayer(Iterator it, Iterator end) : startIterator_(it), endIterator_(end), it_(it),
+    DataLinkLayer(Iterator it, Iterator& end) : startIterator_(it), endIterator_(end), it_(it),
     end_(end), framer_(), crc_(), next_()
     {
 
@@ -39,7 +47,7 @@ public:
         return result;
     }
 
-    template<class FrameAdapter>
+    template<Sendable FrameAdapter>
     ProtocolErrc send(FrameAdapter& frameAdapter) {
         auto ret = crc_.send(it_, end_);
         if(ProtocolErrc::success == ret) {
