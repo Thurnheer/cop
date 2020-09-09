@@ -2,6 +2,7 @@
 #define COP_FIELD_HPP
 
 #include "Error.hpp"
+#include <cstddef>
 
 namespace cop {
 
