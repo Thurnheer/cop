@@ -2,6 +2,15 @@ cmake_minimum_required( VERSION 3.16)
 
 project(cop LANGUAGES CXX VERSION 0.0.1 )
 
+add_library(${PROJECT_NAME})
+
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+        cop_include::cop_include
+)
+
 add_subdirectory( include )
 
 target_include_directories(${PROJECT_NAME}
