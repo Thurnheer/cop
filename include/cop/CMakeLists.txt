@@ -1,5 +1,14 @@
 cmake_minimum_required( VERSION 3.16)
 
+project(cop)
+add_library(${PROJECT_NAME} STATIC)
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+    cop_detail::cop_detail
+)
+
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/detail)
 
 target_sources(${PROJECT_NAME}
@@ -12,6 +21,8 @@ target_sources(${PROJECT_NAME}
     PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/Error.cpp
 )
+
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 target_compile_options( ${PROJECT_NAME}
     PRIVATE
