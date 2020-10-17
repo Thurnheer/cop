@@ -1,8 +1,6 @@
 cmake_minimum_required( VERSION 3.16)
 
 project(cop LANGUAGES CXX VERSION 0.0.1 )
-include(cmake/StandardProjectSettings.cmake)
-include(cmake/PreventInSourceBuilds.cmake)
 
 add_library(${PROJECT_NAME})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -34,24 +32,6 @@ include(cmake/Cache.cmake)
 # standard compiler warnings
 include(cmake/CompilerWarnings.cmake)
 set_project_warnings(project_warnings)
-
-# sanitizer options if supported by compiler
-include(cmake/Sanitizers.cmake)
-enable_sanitizers(project_options)
-
-#enable doxygen
-include(cmake/Doxygen.cmake)
-enable_doxygen()
-
-# allow for static analysis options
-include(cmake/StaticAnalyzers.cmake)
-
-#Set up some extra Conan dependencies
-set(CONAN_EXTRA_REQUIRES "")
-set(CONAN_EXTRA_OPTIONS "")
-
-include(cmake/Conan.cmake)
-run_conan()
 
 target_sources(${PROJECT_NAME}
     PUBLIC
@@ -86,14 +66,35 @@ target_link_libraries(${PROJECT_NAME}
         project_warnings
 )
 
-target_compile_features(${PROJECT_NAME}
-    PRIVATE
-        cxx_std_20
-)
-
 
 # testing code
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+
+    target_compile_features(${PROJECT_NAME}
+        PRIVATE
+            cxx_std_20
+    )
+
+    include(cmake/StandardProjectSettings.cmake)
+    include(cmake/PreventInSourceBuilds.cmake)
+
+# sanitizer options if supported by compiler
+    include(cmake/Sanitizers.cmake)
+    enable_sanitizers(project_options)
+
+#enable doxygen
+    include(cmake/Doxygen.cmake)
+    enable_doxygen()
+
+# allow for static analysis options
+    include(cmake/StaticAnalyzers.cmake)
+
+#Set up some extra Conan dependencies
+    set(CONAN_EXTRA_REQUIRES "")
+    set(CONAN_EXTRA_OPTIONS "")
+
+    include(cmake/Conan.cmake)
+    run_conan()
 
     option(ENABLE_TESTING "Enable Test Builds" ON)
     option(ENABLE_SHARED_LIBS "Enable compilation of shared libraries" ON)
