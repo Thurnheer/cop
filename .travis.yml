@@ -52,7 +52,7 @@ jobs:
             sources:
                 - ubuntu-toolchain-r-test
                 - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
-                  key-url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+                  key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
             packages:
               - doxygen
               - python3-pip
