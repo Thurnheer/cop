@@ -1,6 +1,6 @@
 # cop
 
-[![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg)](https://codecov.io/gh/Thurheer/cop)
+[![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg?token=8FNLJGRJ3P)](undefined)
 
 [![Build Status](https://travis-ci.org/Thurnheer/cop.svg?branch=master)](https://travis-ci.org/Thurnheer/cop)
 
