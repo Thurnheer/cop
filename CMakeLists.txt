@@ -116,7 +116,6 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             project_warnings
     )
 
-
     include(CTest) 
 
 endif()
