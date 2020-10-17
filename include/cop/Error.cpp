@@ -17,7 +17,7 @@ const char* ProtocolErrCategory::name() const noexcept
 std::string ProtocolErrCategory::message(int ev) const {
     switch(static_cast<cop::ProtocolErrc>(ev)) {
         case cop::ProtocolErrc::invalid_message_id:
-            break;
+            return "the message id is invalid";
         default:
             return "(unrecognised error)";
     }
