@@ -11,17 +11,17 @@ install:
 
 jobs:
   include:
-    - os: osx
-      compiler: gcc
-      osx_image: xcode12.0    # includes gcc-9 by default
-      env:
-        - GCC_VER="10"
-        - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
-    - os: osx
-      compiler: clang
-      osx_image: xcode12.0
-      env:
-        - MATRIX_EVAL=""
+      #- os: osx
+      #compiler: gcc
+      #osx_image: xcode12.0    # includes gcc-9 by default
+      #env:
+      #- GCC_VER="10"
+      #- MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
+      #- os: osx
+      #compiler: clang
+      #osx_image: xcode12.0
+      #env:
+      #- MATRIX_EVAL=""
     - os: linux
       dist: bionic
       compiler: gcc
