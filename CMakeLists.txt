@@ -11,6 +11,10 @@ add_library(project_options INTERFACE)
 add_library(project_warnings INTERFACE)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES ".*Clang")
+    target_compile_options(project_options
+        PUBLIC
+            -stdlib=libc++
+    )
     option(ENABLE_BUILD_WITH_TIME_TRACE "Enable -ftime-trace to generate time tracing .json files on clang" OFF)
     if(ENABLE_BUILD_WITH_TIME_TRACE)
         add_compile_definitions(project_options INTERFACE -ftime-trace)
