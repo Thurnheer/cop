@@ -53,7 +53,7 @@ jobs:
               packages: 
                   - doxygen
                   - python3-pip
-                  - clang-10 
+                  - clang-10.0 
 
 
 before_script:
