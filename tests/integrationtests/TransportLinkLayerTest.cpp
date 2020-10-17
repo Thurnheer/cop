@@ -81,7 +81,6 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
         }
     }
     GIVEN(" a message") {
-        mySecondEvent message;
 
         std::array<std::byte, 512> buffer;
         using ReadIt = std::array<std::byte, 512>::iterator;
