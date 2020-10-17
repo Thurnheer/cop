@@ -35,7 +35,7 @@ template<>
 class TupleForEachHelper<0> {
 public:
     template <typename Tuple, typename Function>
-    static void exec(Function&& func) {
+    static void exec(Function&& ) {
         // noting to do
     }
 };

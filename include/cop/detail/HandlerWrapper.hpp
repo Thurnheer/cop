@@ -19,12 +19,12 @@ namespace cop::detail {
     private:
         template<typename T>
         using EventFilter = std::is_same<cop::EventT, T>;
-        using AllEvents = filter<EventFilter, std::tuple<Types...> >::type;
+        using AllEvents = typename filter<EventFilter, std::tuple<Types...> >::type;
         template<typename T>
         using CommandFilter = std::is_same<cop::CommandT, T>;
-        using AllCommands = filter<CommandFilter, std::tuple<Types...> >::type;
+        using AllCommands = typename filter<CommandFilter, std::tuple<Types...> >::type;
         template<typename T>
-        using alloc_type = std::conditional<UsingStaticMemory,
+        using alloc_type = typename std::conditional<UsingStaticMemory,
                                             InPlaceAllocationPolicy<T, std::tuple<Types...> >, 
                                             DynamicMemoryPolicy<T>
                                         >::type;
