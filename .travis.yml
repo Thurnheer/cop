@@ -23,7 +23,7 @@ jobs:
       #env:
       #- MATRIX_EVAL=""
     - os: linux
-      dist: bionic
+      dist: focal
       compiler: gcc
       env:
         - GCC_VER="10"
@@ -42,7 +42,7 @@ jobs:
       after_script:
         - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-${GCC_VER}
     - os: linux
-      dist: bionic
+      dist: focal
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
