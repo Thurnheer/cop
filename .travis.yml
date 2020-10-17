@@ -54,8 +54,8 @@ jobs:
                   key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
             packages:
               - clang-11 
-                - gcc-10 # used for libstdc++
-                - g++-10
+              - gcc-10 # used for libstdc++
+              - g++-10
               - doxygen
               - python3-pip
 
