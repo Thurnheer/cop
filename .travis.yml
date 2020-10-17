@@ -45,7 +45,7 @@ jobs:
       dist: focal
       compiler: clang
       env:
-        - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
+        - MATRIX_EVAL="CC=clang-12 && CXX=clang++-12"
       addons:
          apt:
             sources:
@@ -53,7 +53,7 @@ jobs:
                 - sourceline: 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main'
                   key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
             packages:
-              - clang-11 
+              - clang-12 
               - doxygen
               - python3-pip
 
