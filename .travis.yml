@@ -42,7 +42,7 @@ jobs:
       after_script:
         - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-${GCC_VER}
     - os: linux
-      dist: bionic
+      dist: focal
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
@@ -50,7 +50,7 @@ jobs:
          apt:
             sources:
                 - ubuntu-toolchain-r-test
-                - sourceline: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
+                - sourceline: 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal main'
                   key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
             packages:
               - clang-11 
