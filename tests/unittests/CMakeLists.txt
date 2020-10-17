@@ -2,11 +2,9 @@ cmake_minimum_required( VERSION 3.16)
 
 project(cop_unittests)
 
-add_library(${PROJECT_NAME} SHARED)
+add_executable(${PROJECT_NAME} )
 
-add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME} )
-
-set(CMAKE_CXX_STANDARD 20)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
@@ -19,33 +17,21 @@ target_sources(${PROJECT_NAME}
 )
 
 target_link_libraries( ${PROJECT_NAME}
+    PUBLIC
     PRIVATE
+    catch_main
+    project_options
+    project_warnings
     cop::cop
 )
 
-target_compile_options( ${PROJECT_NAME}
-    PRIVATE
-    -Wall
-    -Wextra
-    -Wpedantic
-    -Werror
-    -Wshadow
-    -Wnon-virtual-dtor
-    -pedantic
-    -Wold-style-cast
-    -Wcast-align
-    -Wunused
-    -Woverloaded-virtual
-    -Wconversion
-    -Wsign-conversion
-    -Wmisleading-indentation
-    -Wduplicated-cond
-    -Wduplicated-branches
-    -Wlogical-op
-    -Wnull-dereference
-    -Wuseless-cast
-    -Wdouble-promotion
-    -Wformat=2
-    -Weffc++
+catch_discover_tests(
+    ${PROJECT_NAME}
+    TEST_PREFIX
+    "unittests."
+    EXTRA_ARGS
+    -s
+    --reporter=xml
+    --out=tests.xml
 )
 
