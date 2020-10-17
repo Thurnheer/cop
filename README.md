@@ -1,4 +1,9 @@
 # cop
+
+[![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg)](https://codecov.io/gh/Thurheer/cop)
+
+[![Build Status](https://travis-ci.org/Thurnheer/cop.svg?branch=master)](https://travis-ci.org/Thurnheer/cop)
+
 Communication protocol. A comunication protocol for embedded devices written in C++. This is a header only library developed in TDD style.
 
 Still work in progress, not ready yet.
