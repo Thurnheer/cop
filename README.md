@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/Thurnheer/cop.svg?branch=master)](https://travis-ci.org/Thurnheer/cop)
 
+[![Build status](https://ci.appveyor.com/api/projects/status/hu57p1vr8j9obk1d/branch/master?svg=true)](https://ci.appveyor.com/projects/Thurnheer/cop/branch/master)
+
 Communication protocol. A comunication protocol for embedded devices written in C++. This is a header only library developed in TDD style.
 
 Still work in progress, not ready yet.
