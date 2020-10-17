@@ -44,7 +44,7 @@ SCENARIO( "The channel implemenation sends messages" ) {
             std::array<std::byte, 32> buf;
 
             cop::detail::ChannelImpl channel;
-            channel.sendEvent(std::move(FirstEvent()), buf.begin(), buf.end());
+            channel.sendEvent(FirstEvent(), buf.begin(), buf.end());
             THEN ( "it will be serialised" ) {
                 REQUIRE(buf[0] == std::byte{0x03});
             }
@@ -58,7 +58,7 @@ SCENARIO( "The channel implemenation sends messages" ) {
             };
 
             cop::detail::ChannelImpl channel;
-            channel.sendEvent(std::move(SecondEvent()), buf.begin(), buf.end());
+            channel.sendEvent(SecondEvent(), buf.begin(), buf.end());
 
             THEN ( "it will be serialised" ) {
                 REQUIRE(buf[0] == std::byte{0x09});
@@ -84,7 +84,7 @@ SCENARIO( "The channel implemenation sends messages" ) {
             };
 
             cop::detail::ChannelImpl channel;
-            channel.sendCommand(std::move(FirstCommand()), buf.begin(), buf.end());
+            channel.sendCommand(FirstCommand(), buf.begin(), buf.end());
 
             THEN ( "it will be serialised" ) {
                 REQUIRE(buf[0] == std::byte{0x20});
