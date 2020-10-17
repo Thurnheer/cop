@@ -44,8 +44,8 @@ jobs:
     - os: linux
       dist: focal
       before_install:
-          - sudo deb http://apt.llvm.org/focal/ llvm-toolchain-focal main
-          - sudo deb-src http://apt.llvm.org/focal/ llvm-toolchain-focal main
+          - sudo add-apt-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal main"
+          - sudo add-apt-repository "deb-src http://apt.llvm.org/focal/ llvm-toolchain-focal main"
       compiler: clang
       env:
         - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
