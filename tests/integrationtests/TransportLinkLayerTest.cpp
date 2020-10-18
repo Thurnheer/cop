@@ -3,6 +3,7 @@
 #include "cop/TransportLinkLayer.hpp"
 #include "cop/Event.hpp"
 #include <tuple>
+#include <array>
 
 enum events {
     eMyFirstEvent = 1,
