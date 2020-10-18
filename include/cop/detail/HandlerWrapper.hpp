@@ -29,8 +29,6 @@ namespace cop::detail {
                                             DynamicMemoryPolicy<T>
                                         >::type;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunknown-pragmas"
 #pragma warning (disable : 4348) // visual studio compiler bug: see https://developercommunity.visualstudio.com/content/problem/945050/unexplained-warning-c4348-redefinition-of-default.html
 // visual studio compiler warns about redefinition of default parameter
         template<class AllTypes, typename T = void>
@@ -69,7 +67,6 @@ namespace cop::detail {
             HandlerT& handler_;
         };
 #pragma warning (default : 4348)
-#pragma GCC diagnostic pop
 
         HandleInvoker<AllEvents> eventHandler_;
         HandleInvoker<AllCommands> commandHandler_;
