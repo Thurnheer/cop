@@ -2,6 +2,7 @@
 #include <trompeloeil.hpp>
 #include "cop/detail/HandlerWrapper.hpp"
 #include "cop/Event.hpp"
+#include <array>
 
 enum events {
     eMyFirstEvent = 1,
