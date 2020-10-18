@@ -4,6 +4,7 @@
 #include "Framer.hpp"
 #include "Error.hpp"
 #include <functional>
+#include <optional>
 
 namespace cop {
 
