@@ -28,6 +28,7 @@ function(set_project_warnings project_name)
       /w14905 # wide string literal cast to 'LPSTR'
       /w14906 # string literal cast to 'LPWSTR'
       /w14928 # illegal copy-initialization; more than one user-defined conversion has been implicitly applied
+      /wd4068 # disable warning about unknown pragmas
       /permissive- # standards conformance mode for MSVC compiler.
   )
 
