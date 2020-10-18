@@ -1,5 +1,6 @@
 #include "cop/detail/ChannelImpl.hpp"
 #include <catch2/catch.hpp>
+#include <array>
 
 enum EventIds {
     eFirstEvent = 1,
