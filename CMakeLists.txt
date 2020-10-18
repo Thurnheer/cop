@@ -114,12 +114,12 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
     add_library(catch_main::catch_main ALIAS catch_main)
     target_compile_features(catch_main PUBLIC cxx_std_20)
     target_link_libraries(catch_main
+        PRIVATE
+            project_options
+            project_warnings
         PUBLIC
             CONAN_PKG::catch2
             CONAN_PKG::trompeloeil
-            project_options
-            project_warnings
-            CONAN_PKG::boost
     )
 
     include(CTest) 
