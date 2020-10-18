@@ -119,6 +119,7 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
             CONAN_PKG::trompeloeil
             project_options
             project_warnings
+            CONAN_PKG::boost
     )
 
     include(CTest) 
