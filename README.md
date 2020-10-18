@@ -1,8 +1,12 @@
 # cop
 
+## code status
+
 | code coverage | Linux gcc 10 & clang 11 | Windows VS 2019 |
 |:--------------:|:------------------------:|:----------------:|
 [![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg?token=8FNLJGRJ3P)](https://codecov.io/gh/Thurnheer/cop/branch/master) | [![Build Status](https://travis-ci.org/Thurnheer/cop.svg?branch=master)](https://travis-ci.org/Thurnheer/cop) | [![Build status](https://ci.appveyor.com/api/projects/status/hu57p1vr8j9obk1d/branch/master?svg=true)](https://ci.appveyor.com/project/Thurnheer/cop/branch/master) | 
+
+## General information
 
 Communication protocol. A comunication protocol for embedded devices written in C++. This is a header only library developed in TDD style.
 
