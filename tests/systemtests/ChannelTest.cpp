@@ -8,12 +8,12 @@
 #pragma warning (default : 4619)
 #pragma warning (default : 4242)
 
-/*std::string read(boost::asio::ip::tcp::socket& socket) {
+std::string read(boost::asio::ip::tcp::socket& socket) {
     boost::asio::streambuf buf;
     boost::asio::read_until( socket, buf, "\n" );
     std::string data = boost::asio::buffer_cast<const char*>(buf.data());
     return data;
-}*/
+}
 
 
 enum events {
