@@ -2,7 +2,9 @@
 #include <trompeloeil.hpp>
 #include "cop/TransportLinkLayer.hpp"
 #include "cop/DataLinkLayer.hpp"
+#pragma warning (disable : 4619)
 #include <boost/asio.hpp>
+#pragma warning (default : 4619)
 
 /*std::string read(boost::asio::ip::tcp::socket& socket) {
     boost::asio::streambuf buf;
