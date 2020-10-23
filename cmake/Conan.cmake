@@ -18,7 +18,7 @@ macro(run_conan)
     ${CONAN_EXTRA_REQUIRES}
     catch2/2.11.1
     trompeloeil/v38@rollbear/stable
-    boost/1.74.0
+    #boost/1.74.0
     OPTIONS
     ${CONAN_EXTRA_OPTIONS}
     BASIC_SETUP

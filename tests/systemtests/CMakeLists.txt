@@ -18,7 +18,7 @@ target_link_libraries( ${PROJECT_NAME}
     project_options
     project_warnings
     cop::cop
-    CONAN_PKG::boost
+    #CONAN_PKG::boost
 )
 
 catch_discover_tests(
