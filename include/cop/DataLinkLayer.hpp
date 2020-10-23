@@ -47,16 +47,11 @@ public:
         return result;
     }
 
-    template<Sendable FrameAdapter>
+    template<class FrameAdapter>
     ProtocolErrc send(FrameAdapter& frameAdapter) {
         auto ret = crc_.send(it_, end_);
         if(ProtocolErrc::success == ret) {
-            while(it_ != end_) {
-                auto data = framer_.send(it_, end_);
-                if(data) {
-                    frameAdapter.send(*data);
-                }
-            }
+            frameAdapter.send(it_, end_);
         }
         return ret;
     }
