@@ -56,8 +56,9 @@ struct HandlerMock
 struct Adapter {
     Adapter() : buffer(){}
     std::vector<std::byte> buffer;
-    void send(std::byte& t) noexcept {
-        buffer.push_back(t);
+    using Itr = std::vector<std::byte>::iterator;
+    void send(Itr begin, Itr end) noexcept {
+        buffer.insert(buffer.end(), begin, end);
     }
 };
 
