@@ -58,7 +58,7 @@ public:
 private:
     typename Container<UsingDynamicMemory>::type buffer_;
     Adapter adapter_;
-    using ReadIt = Container<UsingDynamicMemory>::type::iterator;
+    using ReadIt = typename Container<UsingDynamicMemory>::type::iterator;
     TransportLinkLayer<Handler, ReadIt, DataT, UsingDynamicMemory > tll_;
 };
 
