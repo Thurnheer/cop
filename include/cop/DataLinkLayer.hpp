@@ -32,7 +32,7 @@ public:
 
     }
 
-    ProtocolErrc receive(std::byte data) {
+    [[nodiscard]] ProtocolErrc receive(std::byte data) {
         const auto result = framer_.receive(std::forward<std::byte>(data), it_, end_);
         if(ProtocolErrc::success == result)
         {
@@ -48,7 +48,7 @@ public:
     }
 
     template<class FrameAdapter>
-    ProtocolErrc send(FrameAdapter& frameAdapter) {
+    [[nodiscard]] ProtocolErrc send(FrameAdapter& frameAdapter) {
         auto ret = crc_.send(it_, end_);
         if(ProtocolErrc::success == ret) {
             frameAdapter.send(it_, end_);

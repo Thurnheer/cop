@@ -29,7 +29,7 @@ detail::ChannelImpl channel_;
 public:
     TransportLinkLayer(Handler& handler) : handler_(handler), channel_(){}
 
-    ProtocolErrc receive(WriteIt& it, WriteIt& end) {
+    [[nodiscard]] ProtocolErrc receive(WriteIt& it, WriteIt& end) {
         Header header;
         auto ret = header.receive(it, end);
         if(ProtocolErrc::success == ret) {
@@ -51,7 +51,7 @@ public:
     }
 
     template<class Event>
-    ProtocolErrc sendEvent(Event&& event, WriteIt it, WriteIt end) {
+    [[nodiscard]] ProtocolErrc sendEvent(Event&& event, WriteIt it, WriteIt end) {
         Header header;
         header.event(true);
         auto ret = header.send(it, end);

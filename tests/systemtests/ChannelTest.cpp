@@ -1,7 +1,6 @@
 #include <catch2/catch.hpp>
 #include <trompeloeil.hpp>
-#include "cop/TransportLinkLayer.hpp"
-#include "cop/DataLinkLayer.hpp"
+#include <cop/Channel.hpp>
 #pragma warning (disable : 4619)
 #pragma warning (disable : 4242)
 //#include <boost/asio.hpp>
@@ -57,55 +56,28 @@ struct Adapter {
     Adapter() : buffer(){}
     std::vector<std::byte> buffer;
     using Itr = std::vector<std::byte>::iterator;
+    template<class Itr>
     void send(Itr begin, Itr end) noexcept {
         buffer.insert(buffer.end(), begin, end);
     }
 };
 
-
-struct Channel {
-    Channel(HandlerMock& handler) : buffer_(1023, std::byte(0)), adapter_(), tll_(handler) {}
-    std::vector<std::byte> buffer_;
-
-    using ReadIt = std::vector<std::byte>::iterator;
-    Adapter adapter_;
-
-    cop::TransportLinkLayer<HandlerMock, ReadIt, std::tuple<mySecondEvent> > tll_;
-
-    void sendEvent(mySecondEvent& event) {
-        auto it = buffer_.begin(); auto end = buffer_.end();
-        tll_.sendEvent(event, it, end);
-        cop::DataLinkLayer<ReadIt> dll_(it, end);
-        dll_.send(adapter_);
-    }
-
-    void receive() {
-        auto it = buffer_.begin(); auto end = buffer_.end();
-        cop::DataLinkLayer<ReadIt> dll(it, end);
-        for(auto i = adapter_.buffer.begin(); i != adapter_.buffer.end(); ++i) {
-            if(cop::ProtocolErrc::success == dll.receive(*i)) {
-                break;
-            }
-        }
-        tll_.receive(it, end);
-    }
-
-};
-
+using EventsT = std::tuple<mySecondEvent>;
 
 SCENARIO(" Events can be sent and received") {
 
     GIVEN(" a channel and an event") {
+        Adapter adapter;
         HandlerMock handler;
-        Channel channel(handler);
+        cop::Channel<HandlerMock, Adapter, EventsT, false> channel(handler, adapter);
         mySecondEvent event;
 
         using trompeloeil::_;
 
         THEN("the data can be sent and received") {
             REQUIRE_CALL(handler, handle(_));
-            channel.sendEvent(event);
-            channel.receive();
+            REQUIRE(cop::ProtocolErrc::success == channel.sendEvent(event));
+            REQUIRE(cop::ProtocolErrc::success == channel.receive());
         }
     }
 }
