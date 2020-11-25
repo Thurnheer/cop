@@ -27,6 +27,7 @@ jobs:
       compiler: gcc
       env:
         - GCC_VER="10"
+        - CMAKE_DEF=ENABLE_COVERAGE:BOOL=TRUE
         - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
 
       addons:
@@ -46,6 +47,7 @@ jobs:
       dist: focal
       compiler: clang
       env:
+        - CMAKE_DEF=ENABLE_COVERAGE:BOOL=TRUE
         - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
       addons:
          apt:
@@ -67,7 +69,7 @@ before_script:
 script:
   - mkdir build
   - cd build
-  - cmake -D ENABLE_COVERAGE:BOOL=TRUE ../ -GNinja
+  - cmake -D ${CMAKE_DEF} ../ -GNinja
   - cmake --build . 
   - ctest -j2
 
