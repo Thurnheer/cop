@@ -14,6 +14,10 @@
     return data;
 }*/
 
+static const int TEST_INT = 41;
+static const int TEST_DATA = 42;
+static const double TEST_DOUBLE = 2.9;
+
 
 enum events {
     eMyFirstEvent = 1,
@@ -21,7 +25,7 @@ enum events {
 };
 
 struct myFirstEvent : cop::Event<eMyFirstEvent> {
-    int data = 41;
+    int data = TEST_INT;
     template<class Coder>
     auto parse(Coder coder) {
         return coder | data;
@@ -31,16 +35,17 @@ struct myFirstEvent : cop::Event<eMyFirstEvent> {
 struct mySecondEvent : cop::Event<eMySecondEvent> {
     mySecondEvent() = default;
     mySecondEvent(int da, double dd) : data(da), d(dd){}
-    int data = 42;
-    double d = 2.9;
 
     template<class Coder>
     auto parse(Coder coder) {
          return coder | data | d;
     }
-    bool operator==(const mySecondEvent& s) {
+    bool operator==(const mySecondEvent& s) const {
         return data == s.data && d == s.d;
     }
+private:
+    int data = TEST_DATA;
+    double d = TEST_DOUBLE;
 };
 
 #pragma GCC diagnostic push
@@ -53,13 +58,11 @@ struct HandlerMock
 
 
 struct Adapter {
-    Adapter() : buffer(){}
-    std::vector<std::byte> buffer;
-    using Itr = std::vector<std::byte>::iterator;
     template<class Itr>
     void send(Itr begin, Itr end) noexcept {
         buffer.insert(buffer.end(), begin, end);
     }
+    std::vector<std::byte> buffer{};
 };
 
 using EventsT = std::tuple<mySecondEvent>;

@@ -85,8 +85,8 @@ SCENARIO("The binary framer handles frames and byte stuffing", "[BinaryFramer]")
 
     GIVEN(" some data ") {
         std::vector data {
-            std::byte(0x32), std::byte(0x34), std::byte('A'), std::byte('\\'),
-            std::byte(0x32), std::byte('\\'), std::byte(0x34), std::byte('A')
+            std::byte(0x32), std::byte(0x34), std::byte('A'), std::byte('\\'), // NOLINT
+            std::byte(0x32), std::byte('\\'), std::byte(0x34), std::byte('A') // NOLINT
         };
 
         auto it = data.cbegin(); auto end = data.cend();

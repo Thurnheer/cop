@@ -5,32 +5,38 @@
 #include <tuple>
 #include <array>
 
+static const int TEST_INT = 41;
+static const int TEST_DATA = 42;
+static const double TEST_DOUBLE = 2.9;
+
 enum events {
     eMyFirstEvent = 1,
     eMySecondEvent
 };
 
 struct myFirstEvent : cop::Event<eMyFirstEvent> {
-    int data = 41;
     template<class Coder>
     auto parse(Coder coder) {
         return coder | data;
     }
+private:
+    int data = TEST_INT;
 };
 
 struct mySecondEvent : cop::Event<eMySecondEvent> {
     mySecondEvent() = default;
     mySecondEvent(int da, double dd) : data(da), d(dd){}
-    int data = 42;
-    double d = 2.9;
 
     template<class Coder>
     auto parse(Coder coder) {
          return coder | data | d;
     }
-    bool operator==(const mySecondEvent& s) {
+    bool operator==(const mySecondEvent& s) const {
         return data == s.data && d == s.d;
     }
+private:
+    int data = TEST_DATA;
+    double d = TEST_DOUBLE;
 };
 
 #pragma GCC diagnostic push
@@ -41,16 +47,18 @@ struct HandlerMock
 };
 #pragma GCC diagnostic pop
 
+static constexpr int BUFFER_SIZE = 1023;
+
 SCENARIO("The transport link layer chercks the header and creates the messages") {
     GIVEN("A buffer") {
         
-        const std::array<std::byte, 1023> MESSAGE
+        const std::array<std::byte, BUFFER_SIZE> MESSAGE
             {std::byte{0x02}, std::byte{0}, std::byte{2}, std::byte{5},
                 std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0},
                 std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
-        using ReadIt = std::array<std::byte, 1023>::const_iterator;
+        using ReadIt = std::array<std::byte, BUFFER_SIZE>::const_iterator;
 
-        auto it = MESSAGE.begin(); auto end = MESSAGE.end();
+        const auto* it = MESSAGE.begin(); const auto* end = MESSAGE.end();
         
         const mySecondEvent EVENT (5, 0.0);
 
@@ -66,12 +74,12 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
     }
     GIVEN("A buffer with a wrong ID") {
         
-        const std::array<std::byte, 1023> MESSAGE
+        const std::array<std::byte, BUFFER_SIZE> MESSAGE
             {std::byte{0x02}, std::byte{0}, std::byte{0}, std::byte{0},
                 std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
-        using ReadIt = std::array<std::byte, 1023>::const_iterator;
+        using ReadIt = std::array<std::byte, BUFFER_SIZE>::const_iterator;
 
-        auto it = MESSAGE.begin(); auto end = MESSAGE.end();
+        const auto* it = MESSAGE.begin(); const auto* end = MESSAGE.end();
 
         HandlerMock handler;
         using trompeloeil::_;
@@ -82,10 +90,10 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
         }
     }
     GIVEN(" a message") {
-
-        std::array<std::byte, 512> buffer;
-        using ReadIt = std::array<std::byte, 512>::iterator;
-        auto it = buffer.begin(); auto end = buffer.end();
+        static constexpr int BUFFER_S = 512;
+        std::array<std::byte, BUFFER_S> buffer{};
+        using ReadIt = std::array<std::byte, BUFFER_S>::iterator;
+        auto* it = buffer.begin(); auto* end = buffer.end();
         HandlerMock handler;
         cop::TransportLinkLayer<HandlerMock, ReadIt, std::tuple<mySecondEvent> > tll(handler);
         mySecondEvent secondEvent;

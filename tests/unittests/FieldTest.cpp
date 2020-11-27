@@ -6,8 +6,9 @@ SCENARIO("The field has a value and can be serialized") {
         std::vector data{ std::byte(0x0), std::byte(0x0)};
         auto it = data.begin(); auto end = data.end();
 
+        static const uint16_t FIELD_DATA = 4080;
         cop::Field field;
-        field.value(4080);
+        field.value(FIELD_DATA);
 
         THEN(" it is serialized") {
 
@@ -19,7 +20,9 @@ SCENARIO("The field has a value and can be serialized") {
     }
 
     GIVEN(" a buffer ") {
-        std::vector data{ std::byte(0xF0), std::byte(0x0F)};
+        static const auto FIELD_DATA_FIRST_BYTE = static_cast<unsigned char>(0xF0);
+        static const auto FIELD_DATA_SECOND_BYTE = static_cast<unsigned char>(0x0F);
+        std::vector data{ std::byte(FIELD_DATA_FIRST_BYTE), std::byte(FIELD_DATA_SECOND_BYTE)};
         auto it = data.cbegin(); auto end = data.cend();
 
         cop::Field field;

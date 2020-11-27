@@ -3,12 +3,12 @@
 
 SCENARIO("The data link layer checks the framing and crc", "[DataLinkLayer]") {
     GIVEN("a frame") {
-
+        static const int BUFFER_SIZE = 6;
         const std::vector FRAME {
             std::byte('A'), std::byte(0), std::byte(1), std::byte(2),
             std::byte(3), std::byte(0xA1), std::byte(0x10), std::byte('A')
         };
-        std::vector<std::byte> buffer(6, std::byte(0));
+        std::vector<std::byte> buffer(BUFFER_SIZE, std::byte(0));
         auto it = buffer.begin(); auto end = buffer.end();
         THEN("it will be detected and the crc checked") {
             cop::DataLinkLayer dll(it, end);
@@ -25,17 +25,18 @@ SCENARIO("The data link layer checks the framing and crc", "[DataLinkLayer]") {
 
     GIVEN("some data") {
         struct FrameAdapter {
-            FrameAdapter() : data_(){}
-            std::vector<std::byte> data_;
             using Itr = std::vector<std::byte>::iterator;
             void send(Itr begin, Itr end) noexcept {
                 data_.insert(data_.end(), begin, end);
             }
+        private:
+            std::vector<std::byte> data_{};
         };
         const std::vector DATA {
             std::byte('A'), std::byte('B'), std::byte('T')
         };
-        std::vector<std::byte> buffer(5, std::byte(0));
+        static const int BUFFER_SIZE = 5;
+        std::vector<std::byte> buffer(BUFFER_SIZE, std::byte(0));
         auto it = buffer.begin(); auto end = buffer.end();
         
         THEN("it will be packet within a frame") {

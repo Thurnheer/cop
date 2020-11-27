@@ -21,7 +21,8 @@ SCENARIO("The Frame defines how to interpret or serialise Messages", "[Frame]")
 {
     GIVEN("some data, and an event handler") {
 
-        std::vector buffer(6, std::byte(0));
+        static const int BUFFERSIZE = 6;
+        std::vector buffer(BUFFERSIZE, std::byte(0));
         THEN("it will be interpreted and an Event generated") {
             const std::vector OUTPUT {
                 // header (event), Id field (id: 1)     , data (char)

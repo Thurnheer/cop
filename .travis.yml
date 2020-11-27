@@ -67,6 +67,28 @@ jobs:
       compiler: gcc
       env:
         - GCC_VER="10"
+        - CMAKE_DEF=ENABLE_CLANG_TIDY:BOOL=TRUE
+        - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
+
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            # I couldn't get ${GCC_VER} in here successfully
+            - ninja-build
+            - gcc-10
+            - g++-10
+            - doxygen
+            - python3-pip
+            - cppcheck
+      after_script:
+        - bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-${GCC_VER}
+    - os: linux
+      dist: focal
+      compiler: gcc
+      env:
+        - GCC_VER="10"
         - CMAKE_DEF=ENABLE_CPPCHECK:BOOL=TRUE
         - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
 
