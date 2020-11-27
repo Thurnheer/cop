@@ -58,7 +58,7 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
                 std::byte{0}, std::byte{0}, std::byte{0}, std::byte{0}};
         using ReadIt = std::array<std::byte, BUFFER_SIZE>::const_iterator;
 
-        const auto it = MESSAGE.begin(); const auto end = MESSAGE.end();
+        auto it = MESSAGE.begin(); auto end = MESSAGE.end(); //NOLINT
         
         const mySecondEvent EVENT (5, 0.0);
 
