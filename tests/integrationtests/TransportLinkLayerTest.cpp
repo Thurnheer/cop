@@ -93,7 +93,7 @@ SCENARIO("The transport link layer chercks the header and creates the messages")
         static constexpr int BUFFER_S = 512;
         std::array<std::byte, BUFFER_S> buffer{};
         using ReadIt = std::array<std::byte, BUFFER_S>::iterator;
-        auto* it = buffer.begin(); auto* end = buffer.end();
+        auto it = buffer.begin(); auto end = buffer.end(); //NOLINT
         HandlerMock handler;
         cop::TransportLinkLayer<HandlerMock, ReadIt, std::tuple<mySecondEvent> > tll(handler);
         mySecondEvent secondEvent;
