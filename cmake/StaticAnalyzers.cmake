@@ -11,6 +11,7 @@ if(ENABLE_CPPCHECK)
         --enable=all
         --inline-suppr
         --inconclusive
+        --error-exitcode=1
         -i
         ${CMAKE_SOURCE_DIR}/imgui/lib)
   else()
