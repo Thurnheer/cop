@@ -90,18 +90,19 @@ jobs:
         - CMAKE_DEF=ENABLE_CPPCHECK:BOOL=TRUE
         - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
 
+      before_script:
+          - snap install cppcheck
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            # I couldn't get ${GCC_VER} in here successfully
             - ninja-build
             - gcc-10
             - g++-10
             - doxygen
             - python3-pip
-            - cppcheck
+              #- cppcheck
 
 before_script:
   - eval "${MATRIX_EVAL}"
