@@ -1,7 +1,7 @@
 #ifndef COP_BINARYCODER_HPP
 #define COP_BINARYCODER_HPP
 
-#include "expected.hpp"
+#include <tl/expected.hpp>
 
 namespace cop {
 

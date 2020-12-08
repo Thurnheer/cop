@@ -34,7 +34,7 @@ public:
         return ProtocolErrc::success;
     }
 
-    uint16_t value() noexcept {
+    uint16_t value() const noexcept {
         return value_;
     }
 

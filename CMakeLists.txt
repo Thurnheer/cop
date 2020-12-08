@@ -49,7 +49,6 @@ target_sources(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/Id.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/Interpreter.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/TransportLinkLayer.hpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/expected.hpp
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/Error.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/cop/detail/ChannelImpl.hpp
@@ -61,6 +60,8 @@ target_sources(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+        CONAN_PKG::tl-expected
     PRIVATE
         project_options
         project_warnings
