@@ -68,6 +68,8 @@ jobs:
       env:
         - CMAKE_DEF=ENABLE_CLANG_TIDY:BOOL=TRUE
         - MATRIX_EVAL="CC=clang-11 && CXX=clang++-11"
+      before_script:
+        - bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
       addons:
         apt:
