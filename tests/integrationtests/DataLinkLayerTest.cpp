@@ -45,7 +45,7 @@ SCENARIO("The data link layer checks the framing and crc", "[DataLinkLayer]") {
             buffer[2] = DATA[2];
 
             cop::DataLinkLayer dll(it, end);
-            FrameAdapter frameAdapter;
+            FrameAdapter frameAdapter{};
             REQUIRE(cop::ProtocolErrc::success == dll.send(frameAdapter));
 
             REQUIRE(buffer[0] == std::byte('A'));
