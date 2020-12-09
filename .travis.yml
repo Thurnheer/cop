@@ -84,26 +84,26 @@ jobs:
             - doxygen
             - python3-pip
             - clang-tidy-11
-    - os: linux
-      dist: focal
-      compiler: gcc
-      env:
-        - GCC_VER="10"
-        - CMAKE_DEF=ENABLE_CPPCHECK:BOOL=TRUE
-        - MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
+              #- os: linux
+              #dist: focal
+              #compiler: gcc
+              #env:
+              #- GCC_VER="10"
+              #- CMAKE_DEF=ENABLE_CPPCHECK:BOOL=TRUE
+              #- MATRIX_EVAL="CC=gcc-${GCC_VER} && CXX=g++-${GCC_VER}"
 
-      before_script:
-        - sudo snap install cppcheck
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - ninja-build
-            - gcc-10
-            - g++-10
-            - doxygen
-            - python3-pip
+              #before_script:
+              #- sudo snap install cppcheck
+              #addons:
+              #apt:
+              #sources:
+              #- ubuntu-toolchain-r-test
+              #packages:
+              #- ninja-build
+              #- gcc-10
+              #- g++-10
+              #- doxygen
+              #- python3-pip
               #- cppcheck
 
 before_script:
