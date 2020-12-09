@@ -80,10 +80,8 @@ jobs:
           packages:
             # I couldn't get ${GCC_VER} in here successfully
             - ninja-build
-            - clang-11 
             - doxygen
             - python3-pip
-            - clang-tidy-11
               #- os: linux
               #dist: focal
               #compiler: gcc
