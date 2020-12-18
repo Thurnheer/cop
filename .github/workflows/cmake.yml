@@ -26,6 +26,10 @@ jobs:
           export CC=/usr/bin/clang-11
           export CXX=/usr/bin/clang++-11
 
+    - name: install gcc 10
+      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10
+
+
     - name: Create Build Environment
       # Some projects don't allow in-source building, so create a separate build directory
       # We'll use this as our working directory for all subsequent commands
