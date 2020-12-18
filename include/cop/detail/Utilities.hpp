@@ -13,6 +13,7 @@ struct TupleAsAlignedUnion<std::tuple<TypesT...> >
     using type = typename std::aligned_union<0, TypesT...>::type;
 };
 
+/*
 namespace detail {
 
 template<std::size_t remaining>
@@ -49,6 +50,7 @@ void TupleForEach(Function&& func) {
 
     detail::TupleForEachHelper<TupleSize>::template exec<tuple>(std::forward<Function>(func));
 }
+*/
 
 template<template<class> class Pred, class Sequence>
 struct filter;

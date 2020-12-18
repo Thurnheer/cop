@@ -17,7 +17,6 @@ class Interpreter<Iterator, std::tuple<Types...> > {
     using FrameDefinition = std::tuple<Types...>;
     std::reference_wrapper<Iterator> it_;
     std::reference_wrapper<Iterator> end_;
-    //TupleAsAlignedUnion<FrameDefinition> storage_;
     std::tuple<Types...> frame_;
 
 public:

@@ -19,7 +19,7 @@ struct myFirstEvent : cop::Event<eMyFirstEvent> {
         return coder | data;
     }
 private:
-    int data = TEST_INT;
+    int data = TEST_INT; // cppcheck-suppress unusedStructMember
 };
 
 struct mySecondEvent : cop::Event<eMySecondEvent> {
@@ -46,7 +46,7 @@ SCENARIO( "The HandlerWrapper generates Events", "[generate Events]" ) {
         
         struct Handler
         {
-            static void handle(mySecondEvent& e) {
+            static void handle(mySecondEvent& e) { // cppcheck-suppress constParameter
                 REQUIRE(e.getData() == 1);
                 REQUIRE(e.getD() == 0.0);
             }
