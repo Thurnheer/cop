@@ -13,7 +13,7 @@ if(ENABLE_CPPCHECK)
         --inconclusive
         --error-exitcode=1
         -i
-        ${CMAKE_SOURCE_DIR}/imgui/lib)
+        ${CMAKE_BINARY_DIR}/_deps)
   else()
     message(SEND_ERROR "cppcheck requested but executable not found")
   endif()
