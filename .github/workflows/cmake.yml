@@ -18,7 +18,8 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Download Conan package manager
-      run: pip install conan
+      run: |
+           pip install conan
            conan
            which conan
 
