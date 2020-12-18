@@ -74,7 +74,7 @@ jobs:
       run: bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-10
   
   build2:
-      runs-on: ubuntu-20.04
+    runs-on: ubuntu-20.04
       
     steps:
     - uses: actions/checkout@v2
@@ -110,4 +110,3 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
 
-      run: bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-10
