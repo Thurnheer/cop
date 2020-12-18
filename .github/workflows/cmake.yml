@@ -62,4 +62,5 @@ jobs:
       run: ctest -C $BUILD_TYPE -j2
 
     - name: Upload coverage report
+      working-directory: ${{runner.workspace}}/build
       run: bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-10
