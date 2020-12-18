@@ -26,8 +26,11 @@ jobs:
           export CC=/usr/bin/clang-11
           export CXX=/usr/bin/clang++-11
 
-    - name: install gcc 10
+    - name: switch to gcc 10
       run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10
+
+    - name: install ninja
+      run: sudo apt-get install -y ninja-build
 
 
     - name: Create Build Environment
@@ -43,7 +46,7 @@ jobs:
       # Note the current convention is to use the -S and -B options here to specify source 
       # and build directories, but this is only available with CMake 3.13 and higher.  
       # The CMake binaries on the Github Actions machines are (as of this writing) 3.12
-      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+      run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=$BUILD_TYPE -GNinja
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
