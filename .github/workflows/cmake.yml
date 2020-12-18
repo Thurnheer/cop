@@ -76,6 +76,10 @@ jobs:
   build2:
       runs-on: ubuntu-20.04
       
+      strategy:
+        matrix:
+          cxx-compiler: [clang++-11]
+
       steps:
     - uses: actions/checkout@v2
 
