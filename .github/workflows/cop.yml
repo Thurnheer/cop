@@ -83,12 +83,14 @@ jobs:
       run: sudo pip install conan
 
     - name: install clang-tidy
+      if: ${{matrix.static-analysis == 'ENABLE_CLANG_TIDY' }}
       run: sudo apt-get install -y clang-tidy
 
     - name: install cppcheck
+      if: ${{matrix.static-analysis == 'ENABLE_CPPCHECK' }}
       run: |
            wget -O cppcheck.tar.gz https://github.com/danmar/cppcheck/archive/2.3.tar.gz
-           tar -wvf cppcheck.tar.gz
+           tar -xvf cppcheck.tar.gz
            cd cppcheck
            sudo make install
 
