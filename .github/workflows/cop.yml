@@ -84,6 +84,9 @@ jobs:
     - name: install ninja
       run: sudo apt-get install -y ninja-build
 
+    - name: switch to gcc 10
+      run: sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10 --slave /usr/bin/gcov gcov /usr/bin/gcov-10
+
     - name: install clang-tidy
       if: ${{matrix.static-analysis == 'ENABLE_CLANG_TIDY' }}
       run: sudo apt-get install -y clang-tidy
