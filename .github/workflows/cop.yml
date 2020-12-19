@@ -87,6 +87,7 @@ jobs:
       run: sudo apt-get install -y clang-tidy
 
     - name: download and unpack cppcheck
+      working-directory: ${{runner.workspace}}
       if: ${{matrix.static-analysis == 'ENABLE_CPPCHECK' }}
       run: |
            wget -O cppcheck.tar.gz https://github.com/danmar/cppcheck/archive/2.3.tar.gz
