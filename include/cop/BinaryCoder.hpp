@@ -8,7 +8,7 @@ namespace cop {
     template<class ReadIt>
     class BinaryReceiveCoder {
     public:
-        explicit BinaryReceiveCoder(ReadIt& it, ReadIt& end) noexcept : it_(it), end_(end){}
+        explicit BinaryReceiveCoder(ReadIt& it, ReadIt& end) noexcept : it_(it), end_(end){} // cppcheck-suppress constParameter
         template<typename T>
         tl::expected<BinaryReceiveCoder<ReadIt>, ProtocolErrc> operator | (T& t) noexcept{
             static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");
@@ -54,7 +54,7 @@ namespace cop {
     template<class WriteIt>
     class BinarySendCoder {
     public:
-        explicit BinarySendCoder(WriteIt& it, WriteIt& end) noexcept: it_(it), end_(end){}
+        explicit BinarySendCoder(WriteIt& it, WriteIt& end) noexcept: it_(it), end_(end){} // cppcheck-suppress constParameter
         template<typename T>
         tl::expected<BinarySendCoder<WriteIt>, ProtocolErrc> operator | (const T t) const noexcept{
             static_assert(std::is_fundamental<T>::value, "Parsed values need to be fundamental");

@@ -13,7 +13,7 @@ namespace cop::detail {
     public:
         template<typename T>
         struct InPlaceDeleter {
-            void operator()(T* obj) {
+            void operator()(T* obj) const {
                 obj->~T();
             }
         };
