@@ -15,11 +15,11 @@ enum events {
 
 struct myFirstEvent : cop::Event<eMyFirstEvent> {
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | data;
     }
 private:
-    int data = TEST_INT; // cppcheck-suppress unusedStructMember
+    int data = TEST_INT;
 };
 
 struct mySecondEvent : cop::Event<eMySecondEvent> {
@@ -30,7 +30,7 @@ struct mySecondEvent : cop::Event<eMySecondEvent> {
     [[nodiscard]] auto getD() const { return d; }
 
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
          return coder | data | d;
     }
 private:
