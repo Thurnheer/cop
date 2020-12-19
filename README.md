@@ -2,9 +2,9 @@
 
 ## code status
 
-| code coverage | Linux: gcc 10 & clang 11 | Windows VS2019 |
-|:--------------:|:-------------------------:|:---------------:|
-[![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg?token=8FNLJGRJ3P)](https://codecov.io/gh/Thurnheer/cop/branch/master) | [![Build Status](https://github.com/Thurnheer/cop/workflows/cop/badge.svg)](https://github.com/Thurnheer/cop/actions) | [![Build status](https://ci.appveyor.com/api/projects/status/hu57p1vr8j9obk1d/branch/master?svg=true)](https://ci.appveyor.com/project/Thurnheer/cop/branch/master) | 
+| code coverage | Linux: gcc 10 & clang 11 | Windows VS2019 | Code quality |
+|:--------------:|:-------------------------:|:---------------:|:-------------:|
+[![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg?token=8FNLJGRJ3P)](https://codecov.io/gh/Thurnheer/cop/branch/master) | [![Build Status](https://github.com/Thurnheer/cop/workflows/cop/badge.svg)](https://github.com/Thurnheer/cop/actions) | [![Build status](https://ci.appveyor.com/api/projects/status/hu57p1vr8j9obk1d/branch/master?svg=true)](https://ci.appveyor.com/project/Thurnheer/cop/branch/master) | [![Codacy Badge](https://app.codacy.com/project/badge/Grade/d27224a91c824c12ae9a22e295e77ee2)](https://www.codacy.com/gh/Thurnheer/cop/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Thurnheer/cop&amp;utm_campaign=Badge_Grade) |
 
 ## General information
 
