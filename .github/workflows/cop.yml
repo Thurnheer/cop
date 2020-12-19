@@ -94,7 +94,7 @@ jobs:
 
     - name: install cppcheck
       if: ${{matrix.static-analysis == 'ENABLE_CPPCHECK' }}
-      working-directory: ${{runner.workspace}}/cppcheck
+      working-directory: ${{runner.workspace}}/cppcheck-2.3
       run: sudo make install
 
     - name: Create Build Environment
