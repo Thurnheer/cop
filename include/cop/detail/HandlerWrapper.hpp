@@ -36,7 +36,8 @@ namespace cop::detail {
         template<class AllTypes> // For empty tuples
         struct HandleInvoker<AllTypes, typename std::enable_if<std::is_same_v<std::tuple<>, AllTypes> >::type > {
         explicit HandleInvoker(HandlerT&) {}
-            cop::ProtocolErrc handle(ID_t, WriteIt&, WriteIt&) { // cppcheck-suppress functionStatic
+            cop::ProtocolErrc handle(ID_t, WriteIt&, WriteIt&) // cppcheck-suppress functionStatic
+            {
                 return ProtocolErrc::invalid_message_type;
             }
         };
