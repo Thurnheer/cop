@@ -16,7 +16,7 @@ enum events {
 
 struct myFirstEvent : cop::Event<eMyFirstEvent> {
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | data;
     }
 private:
@@ -28,7 +28,7 @@ struct mySecondEvent : cop::Event<eMySecondEvent> {
     mySecondEvent(int da, double dd) : data(da), d(dd){}
 
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
          return coder | data | d;
     }
     bool operator==(const mySecondEvent& s) const {
