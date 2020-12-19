@@ -10,7 +10,7 @@ enum myId {
 };
 
 struct myEvent : cop::Event<myId> {
-    char data = 'S'; // cppcheck-suppress unusedStructMember
+    char data = 'S';
     template<class Coder>
     auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | data;
