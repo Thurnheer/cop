@@ -68,9 +68,6 @@ jobs:
       working-directory: ${{runner.workspace}}
       run: bash <(curl -s https://codecov.io/bash) -x /usr/bin/gcov-10
 
-    - name: Codacy Analysis CLI
-      uses: codacy/codacy-analysis-cli-action@1.1.0
-  
   static_code_analysis:
     runs-on: ubuntu-20.04
       
