@@ -4,6 +4,7 @@
 
 | code coverage | Linux: gcc 10 & clang 11 | Windows VS2019 |
 |:--------------:|:-------------------------:|:---------------:|
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58e55d35019b4fbf96947380ceee866c)](https://app.codacy.com/gh/Thurnheer/cop?utm_source=github.com&utm_medium=referral&utm_content=Thurnheer/cop&utm_campaign=Badge_Grade_Settings)
 [![codecov](https://codecov.io/gh/Thurnheer/cop/branch/master/graph/badge.svg?token=8FNLJGRJ3P)](https://codecov.io/gh/Thurnheer/cop/branch/master) | [![Build Status](https://github.com/Thurnheer/cop/workflows/cop/badge.svg)](https://github.com/Thurnheer/cop/actions) | [![Build status](https://ci.appveyor.com/api/projects/status/hu57p1vr8j9obk1d/branch/master?svg=true)](https://ci.appveyor.com/project/Thurnheer/cop/branch/master) | 
 
 ## General information
