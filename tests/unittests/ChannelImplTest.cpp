@@ -13,18 +13,18 @@ static const int DATA_THIRTYTWO = 32;
 static const float DATA_FLOAT = 1.0F;
 
 struct FirstEvent : cop::Event<eFirstEvent> {
-    int data = DATA_THREE; // cppcheck-suppress unusedStructMember
+    int data = DATA_THREE;
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | data;
     }
 };
 
 struct SecondEvent : cop::Event<eSecondEvent> {
-    int idata = DATA_NINE; // cppcheck-suppress unusedStructMember
-    float ddata = DATA_FLOAT; // cppcheck-suppress unusedStructMember
+    int idata = DATA_NINE;
+    float ddata = DATA_FLOAT;
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | idata | ddata;
     }
 };
@@ -34,10 +34,10 @@ enum CommandIds {
     eSecondCommand
 };
 struct FirstCommand : cop::Command<eFirstCommand> {
-    int idata = DATA_THIRTYTWO; // cppcheck-suppress unusedStructMember
-    float fdata = DATA_FLOAT; // cppcheck-suppress unusedStructMember
+    int idata = DATA_THIRTYTWO;
+    float fdata = DATA_FLOAT;
     template<class Coder>
-    auto parse(Coder coder) {
+    auto parse(Coder coder) { // cppcheck-suppress functionConst
         return coder | idata | fdata;
     }
 };
