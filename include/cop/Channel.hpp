@@ -48,7 +48,8 @@ public:
         auto it = buffer_.begin(); auto end = buffer_.end();
         cop::DataLinkLayer<ReadIt> dll(it, end);
         for(auto i = adapter_.buffer.begin(); i != adapter_.buffer.end(); ++i) {
-            if(cop::ProtocolErrc::success == dll.receive(*i)) {
+            auto success = dll.receive(*i);
+            if(cop::ProtocolErrc::success == success) {
                 break;
             }
         }
